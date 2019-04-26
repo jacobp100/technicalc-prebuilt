@@ -1,4 +1,4 @@
-type node = ScilineCalculator.AST.t;
+type node = ScilineCalculator.ASTTypes.t;
 
 type t = [
   | `Calculate(

@@ -1,39 +1,50 @@
-open ClientUtil;
+open ScilineCalculator.ASTTypes;
 
 let encodeValue = ScilineCalculator.Encoding.encode;
 let decodeValue = ScilineCalculator.Encoding.decode;
 
 let calculate = (value, jsContext): Work.t => {
-  let context = Belt.Option.map(jsContext, encodeJsContext);
-  `Calculate((ofEncoded(value), context));
+  let context =
+    jsContext
+    ->Belt.Option.map(jsContext =>
+        Js.Dict.entries(jsContext)
+        ->Belt.Array.reduce(Belt.Map.String.empty, (accum, (key, value)) =>
+            Belt.Map.String.set(
+              accum,
+              key,
+              ScilineCalculator.Encoding.encode(value),
+            )
+          )
+      );
+  `Calculate((ofValue(value), context));
 };
 let quadratic = (a, b, c): Work.t =>
-  `Quadratic((ofEncoded(a), ofEncoded(b), ofEncoded(c)));
+  `Quadratic((ofValue(a), ofValue(b), ofValue(c)));
 let cubic = (a, b, c, d): Work.t =>
-  `Cubic((ofEncoded(a), ofEncoded(b), ofEncoded(c), ofEncoded(d)));
+  `Cubic((ofValue(a), ofValue(b), ofValue(c), ofValue(d)));
 let var2 = (x0, y0, c0, x1, y1, c1): Work.t =>
   `Var2((
-    ofEncoded(x0),
-    ofEncoded(y0),
-    ofEncoded(c0),
-    ofEncoded(x1),
-    ofEncoded(y1),
-    ofEncoded(c1),
+    ofValue(x0),
+    ofValue(y0),
+    ofValue(c0),
+    ofValue(x1),
+    ofValue(y1),
+    ofValue(c1),
   ));
 let var3 = (x0, y0, z0, c0, x1, y1, z1, c1, x2, y2, z2, c2): Work.t =>
   `Var3((
-    ofEncoded(x0),
-    ofEncoded(y0),
-    ofEncoded(z0),
-    ofEncoded(c0),
-    ofEncoded(x1),
-    ofEncoded(y1),
-    ofEncoded(z1),
-    ofEncoded(c1),
-    ofEncoded(x2),
-    ofEncoded(y2),
-    ofEncoded(z2),
-    ofEncoded(c2),
+    ofValue(x0),
+    ofValue(y0),
+    ofValue(z0),
+    ofValue(c0),
+    ofValue(x1),
+    ofValue(y1),
+    ofValue(z1),
+    ofValue(c1),
+    ofValue(x2),
+    ofValue(y2),
+    ofValue(z2),
+    ofValue(c2),
   ));
 
 [@bs.deriving abstract]
@@ -103,11 +114,7 @@ let flags = Flags.flags;
 
 let customAtom = (~value, ~mml) =>
   ScilineEditor.Types.(
-    `CustomAtom({
-      customAtomValue: SciLine.encode(value),
-      mml,
-      superscript: [],
-    })
+    `CustomAtom({customAtomValue: encodeValue(value), mml, superscript: []})
   );
 let customAtomEncoded = (~value as customAtomValue, ~mml) =>
   ScilineEditor.Types.(`CustomAtom({customAtomValue, mml, superscript: []}));

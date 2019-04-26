@@ -14,5 +14,8 @@ module.exports = {
     alias: {
       "bs-platform": path.resolve(__dirname, "node_modules/bs-platform")
     }
+  },
+  node: {
+    Buffer: false
   }
 };
