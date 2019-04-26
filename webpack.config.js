@@ -1,14 +1,11 @@
 const path = require("path");
 
-module.exports = {
-  entry: {
-    worker: "./src/worker.bs.js",
-    client: "./src/client.bs.js"
-  },
+const createConfig = ({ name, entry, outputLibraryTarget }) => ({
+  entry,
   output: {
-    filename: "[name].js",
+    filename: `${name}.js`,
     path: __dirname,
-    libraryTarget: "commonjs2"
+    libraryTarget: outputLibraryTarget
   },
   resolve: {
     alias: {
@@ -18,4 +15,17 @@ module.exports = {
   node: {
     Buffer: false
   }
-};
+});
+
+module.exports = [
+  createConfig({
+    name: "client",
+    entry: "./src/client.bs.js",
+    outputLibraryTarget: "commonjs2"
+  }),
+  createConfig({
+    name: "worker",
+    entry: "./src/worker.bs.js",
+    outputLibraryTarget: "var"
+  })
+];

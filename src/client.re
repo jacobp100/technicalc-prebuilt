@@ -1,51 +1,26 @@
-open ScilineCalculator.ASTTypes;
-
 let encodeValue = ScilineCalculator.Encoding.encode;
 let decodeValue = ScilineCalculator.Encoding.decode;
 
-let calculate = (value, jsContext): Work.t => {
+let calculate = (node, jsContext): Work.t => {
   let context =
-    jsContext
-    ->Belt.Option.map(jsContext =>
-        Js.Dict.entries(jsContext)
-        ->Belt.Array.reduce(Belt.Map.String.empty, (accum, (key, value)) =>
-            Belt.Map.String.set(
-              accum,
-              key,
-              ScilineCalculator.Encoding.encode(value),
-            )
+    jsContext->Belt.Option.map(jsContext =>
+      Js.Dict.entries(jsContext)
+      ->Belt.Array.reduce(Belt.Map.String.empty, (accum, (key, value)) =>
+          Belt.Map.String.set(
+            accum,
+            key,
+            ScilineCalculator.Encoding.encode(value),
           )
-      );
-  `Calculate((ofValue(value), context));
+        )
+    );
+  `Calculate((node, context));
 };
-let quadratic = (a, b, c): Work.t =>
-  `Quadratic((ofValue(a), ofValue(b), ofValue(c)));
-let cubic = (a, b, c, d): Work.t =>
-  `Cubic((ofValue(a), ofValue(b), ofValue(c), ofValue(d)));
+let quadratic = (a, b, c): Work.t => `Quadratic((a, b, c));
+let cubic = (a, b, c, d): Work.t => `Cubic((a, b, c, d));
 let var2 = (x0, y0, c0, x1, y1, c1): Work.t =>
-  `Var2((
-    ofValue(x0),
-    ofValue(y0),
-    ofValue(c0),
-    ofValue(x1),
-    ofValue(y1),
-    ofValue(c1),
-  ));
+  `Var2((x0, y0, c0, x1, y1, c1));
 let var3 = (x0, y0, z0, c0, x1, y1, z1, c1, x2, y2, z2, c2): Work.t =>
-  `Var3((
-    ofValue(x0),
-    ofValue(y0),
-    ofValue(z0),
-    ofValue(c0),
-    ofValue(x1),
-    ofValue(y1),
-    ofValue(z1),
-    ofValue(c1),
-    ofValue(x2),
-    ofValue(y2),
-    ofValue(z2),
-    ofValue(c2),
-  ));
+  `Var3((x0, y0, z0, c0, x1, y1, z1, c1, x2, y2, z2, c2));
 
 [@bs.deriving abstract]
 type format = {

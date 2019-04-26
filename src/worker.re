@@ -22,10 +22,9 @@ type self = {mutable onmessage: option(onMessageEvent => unit)};
       switch (work) {
       | `Calculate(a, context) =>
         let context =
-          context
-          ->Belt.Option.map(x =>
-              Belt.Map.String.map(x, ScilineCalculator.Encoding.decode)
-            );
+          context->Belt.Option.map(x =>
+            Belt.Map.String.map(x, ScilineCalculator.Encoding.decode)
+          );
         let res = eval(~context?, a);
         [|res|];
       | `Quadratic(a, b, c) =>
