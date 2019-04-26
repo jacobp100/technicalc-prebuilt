@@ -1,16 +1,16 @@
-let encode = ScilineCalculator.Encoding.encode;
-let decode = ScilineCalculator.Encoding.decode;
+open ClientUtil;
 
-let ofEncoded =
-    (value: ScilineCalculator.Types.value): ScilineCalculator.AST.t =>
-  `OfEncoded(encode(value));
+let encodeValue = ScilineCalculator.Encoding.encode;
+let decodeValue = ScilineCalculator.Encoding.decode;
 
-let calculate = value: Work.t => `Calculate(ofEncoded(value));
+let calculate = (value, jsContext): Work.t => {
+  let context = Belt.Option.map(jsContext, encodeJsContext);
+  `Calculate((ofEncoded(value), context));
+};
 let quadratic = (a, b, c): Work.t =>
   `Quadratic((ofEncoded(a), ofEncoded(b), ofEncoded(c)));
 let cubic = (a, b, c, d): Work.t =>
   `Cubic((ofEncoded(a), ofEncoded(b), ofEncoded(c), ofEncoded(d)));
-
 let var2 = (x0, y0, c0, x1, y1, c1): Work.t =>
   `Var2((
     ofEncoded(x0),
@@ -54,7 +54,7 @@ type format = {
 
 let valueOfString = ScilineCalculator.Types.ofString;
 
-let toString = (x, maybeFormat) => {
+let valueToString = (x, maybeFormat) => {
   open ScilineCalculator.OutputFormat;
   let f = maybeFormat->Belt.Option.getWithDefault(format());
 
@@ -97,7 +97,9 @@ let parse = elements =>
   | `Ok(node) => (None, Some(node))
   | `Error(i) => (Some(i), None)
   };
+
 let keys = Keys.keys;
+let flags = Flags.flags;
 
 let customAtom = (~value, ~mml) =>
   ScilineEditor.Types.(

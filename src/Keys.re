@@ -6,11 +6,6 @@ type key = {
   flags: int,
 };
 
-module Flags = {
-  let none = 0b000;
-  let premium = 0b001;
-};
-
 let keys: Js.Dict.t(key) = Js.Dict.empty();
 
 keys

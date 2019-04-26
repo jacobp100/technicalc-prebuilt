@@ -1,22 +1,25 @@
-module SciLine = ScilineCalculator.SciLine;
+type node = ScilineCalculator.AST.t;
 
 type t = [
-  | `Calculate(SciLine.t)
-  | `Quadratic(SciLine.t, SciLine.t, SciLine.t)
-  | `Cubic(SciLine.t, SciLine.t, SciLine.t, SciLine.t)
-  | `Var2(SciLine.t, SciLine.t, SciLine.t, SciLine.t, SciLine.t, SciLine.t)
+  | `Calculate(
+      node,
+      option(Belt.Map.String.t(ScilineCalculator.Encoding.encoding)),
+    )
+  | `Quadratic(node, node, node)
+  | `Cubic(node, node, node, node)
+  | `Var2(node, node, node, node, node, node)
   | `Var3(
-      SciLine.t,
-      SciLine.t,
-      SciLine.t,
-      SciLine.t,
-      SciLine.t,
-      SciLine.t,
-      SciLine.t,
-      SciLine.t,
-      SciLine.t,
-      SciLine.t,
-      SciLine.t,
-      SciLine.t,
+      node,
+      node,
+      node,
+      node,
+      node,
+      node,
+      node,
+      node,
+      node,
+      node,
+      node,
+      node,
     )
 ];
