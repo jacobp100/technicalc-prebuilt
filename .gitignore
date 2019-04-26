@@ -12,5 +12,6 @@ playground.js
 dist
 coverage
 
-client.js
-worker.js
+/client.js
+/worker.js
+/math-typeset.js

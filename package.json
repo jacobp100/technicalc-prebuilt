@@ -18,6 +18,7 @@
     "webpack-cli": "^3.3.1"
   },
   "dependencies": {
+    "mathjax3": "^3.0.0-beta.3",
     "sciline-calculator": "../sciline-calculator/",
     "sciline-editor": "../sciline-editor/"
   }
