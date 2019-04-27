@@ -88,8 +88,12 @@ let keys = Keys.keys;
 let flags = Flags.flags;
 
 let customAtom = (~value, ~mml) =>
-  ScilineEditor.Types.(
-    `CustomAtom({customAtomValue: encodeValue(value), mml, superscript: []})
+  Keys.key(
+    ~value=
+      `CustomAtom({
+        customAtomValue: encodeValue(value),
+        mml,
+        superscript: [],
+      }),
+    ~flags=Flags.premium,
   );
-let customAtomEncoded = (~value as customAtomValue, ~mml) =>
-  ScilineEditor.Types.(`CustomAtom({customAtomValue, mml, superscript: []}));
