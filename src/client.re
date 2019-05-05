@@ -76,7 +76,7 @@ let valueToString = (x, maybeFormat) => {
 
 let insertIndex = ScilineEditor.Mutation.insertIndex;
 let deleteIndex = ScilineEditor.Mutation.deleteIndex;
-let length = ScilineEditor.TreeUtil.length;
+let length = ScilineEditor.Tree.length;
 let toMml = ScilineEditor.Mml.create;
 let parse = elements =>
   switch (ScilineEditor.AstBuilder.parse(elements)) {
