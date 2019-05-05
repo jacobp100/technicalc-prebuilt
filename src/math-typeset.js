@@ -170,7 +170,11 @@ const build = (string, display, { em = 16, ex = 8, cwidth = 80 * 16 } = {}) => {
       case "g":
         return children
           .map(child => iterateTree(child, layer, transform))
-          .reduce(mergeLayersInto, { default: "", placeholder: "" });
+          .reduce(mergeLayersInto, {
+            default: "",
+            placeholder: "",
+            invalid: ""
+          });
       default:
         throw new Error(`Unknown element: ${element.kind}`);
     }
