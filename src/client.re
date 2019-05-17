@@ -74,12 +74,17 @@ let valueToString = (x, maybeFormat) => {
   ScilineCalculator.ToString.toString(~format, ~inline, x);
 };
 
-let insertIndex = ScilineEditor.Mutation.insertIndex;
-let deleteIndex = ScilineEditor.Mutation.deleteIndex;
-let length = ScilineEditor.Tree.length;
+let insertIndex = (ast, key, index) =>
+  switch (key) {
+  | Keys.One(element) =>
+    ScilineEditor.AST_Insert.insertIndex(ast, element, index)
+  | Many(elements) =>
+    ScilineEditor.AST_Insert.insertArrayIndex(ast, elements, index)
+  };
+let deleteIndex = ScilineEditor.AST_Delete.deleteIndex;
 let toMml = ScilineEditor.Mml.create;
 let parse = elements =>
-  switch (ScilineEditor.AstBuilder.parse(elements)) {
+  switch (ScilineEditor.Value.parse(elements)) {
   | `Ok(node) => (None, Some(node))
   | `Error(i) => (Some(i), None)
   };
@@ -90,10 +95,7 @@ let flags = Flags.flags;
 let customAtom = (~value, ~mml) =>
   Keys.key(
     ~value=
-      `CustomAtom({
-        customAtomValue: encodeValue(value),
-        mml,
-        superscript: [],
-      }),
+      `CustomAtomS({ScilineEditor.AST_Types.value: encodeValue(value), mml})
+      ->One,
     ~flags=Flags.premium,
   );
