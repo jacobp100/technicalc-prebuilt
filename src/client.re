@@ -15,6 +15,7 @@ let calculate = (node, jsContext): Work.t => {
     );
   `Calculate((node, context));
 };
+let solveRoot = (body, initial): Work.t => `SolveRoot((body, initial));
 let quadratic = (a, b, c): Work.t => `Quadratic((a, b, c));
 let cubic = (a, b, c, d): Work.t => `Cubic((a, b, c, d));
 let var2 = (x0, y0, c0, x1, y1, c1): Work.t =>

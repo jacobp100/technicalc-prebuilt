@@ -27,6 +27,9 @@ type self = {mutable onmessage: option(onMessageEvent => unit)};
           );
         let res = eval(~context?, a);
         [|res|];
+      | `SolveRoot(body, initial) =>
+        let res = solveRoot(body, initial);
+        [|res|];
       | `Quadratic(a, b, c) =>
         let (x0, x1) = solveQuadratic(a, b, c);
         [|x0, x1|];

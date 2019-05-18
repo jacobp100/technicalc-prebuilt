@@ -5,6 +5,7 @@ type t = [
       node,
       option(Belt.Map.String.t(ScilineCalculator.Encoding.encoding)),
     )
+  | `SolveRoot(node, node)
   | `Quadratic(node, node, node)
   | `Cubic(node, node, node, node)
   | `Var2(node, node, node, node, node, node)
