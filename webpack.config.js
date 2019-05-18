@@ -21,12 +21,12 @@ const createConfig = ({
   },
   node: {
     Buffer: false
-  },
-  plugins: [
-    new webpack.IgnorePlugin({
-      resourceRegExp: /\/(double-struck|fraktur(-bold)?|monospace|sans-serif(-bold)?(-italic)?|script(-bold)?|tex-caligraphic(-bold)?|tex-oldstyle(-bold)?|tex-variant).js/
-    })
-  ]
+  }
+  // plugins: [
+  //   new webpack.IgnorePlugin({
+  //     resourceRegExp: /\/(double-struck|fraktur(-bold)?|monospace|sans-serif(-bold)?(-italic)?|script(-bold)?|tex-caligraphic(-bold)?|tex-oldstyle(-bold)?|tex-variant).js/
+  //   })
+  // ]
 });
 
 module.exports = [

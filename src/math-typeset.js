@@ -186,7 +186,7 @@ const build = (string, display, { em = 16, ex = 8, cwidth = 80 * 16 } = {}) => {
     math.typesetRoot.children[0].attributes.viewBox
   );
 
-  return { viewBox, width, height, ascent, descent, layers, positionMap };
+  return { viewBox, width, height, layers, ascent, descent, positionMap };
 };
 
 export default build;
