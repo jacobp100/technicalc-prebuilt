@@ -91,6 +91,7 @@ const mml = new MathML();
 const svg = new SVG();
 const adaptor = liteAdaptor();
 const html = new HTMLDocument("", adaptor, { InputJax: mml, OutputJax: svg });
+
 const build = (string, display, { em = 16, ex = 8, cwidth = 80 * 16 } = {}) => {
   const math = new html.options.MathItem(string, mml, display);
   math.setMetrics(em, ex, cwidth, 100000, 1);
@@ -123,6 +124,19 @@ const build = (string, display, { em = 16, ex = 8, cwidth = 80 * 16 } = {}) => {
   };
   addToNodeMap(wrapper);
 
+  const pathDefs = new Map();
+  const addPathDef = element => {
+    const { kind, attributes = {}, children } = element;
+    const { id } = attributes;
+    switch (kind) {
+      case "path":
+        pathDefs.set(`#${id}`, attributes.d);
+        break;
+      default:
+        throw new Error(`Unknown element: ${element.kind}`);
+    }
+  };
+
   const iterateTree = (
     element,
     inputLayer = "default",
@@ -154,6 +168,14 @@ const build = (string, display, { em = 16, ex = 8, cwidth = 80 * 16 } = {}) => {
     }
 
     switch (kind) {
+      case "defs":
+        children.forEach(addPathDef);
+        return "";
+      case "use": {
+        const d = pathDefs.get(attributes["xlink:href"]);
+        if (d == null) console.log(element);
+        return pathLayer(layer, transform, d);
+      }
       case "path":
         return pathLayer(layer, transform, attributes.d);
       case "rect": {
@@ -167,6 +189,7 @@ const build = (string, display, { em = 16, ex = 8, cwidth = 80 * 16 } = {}) => {
           `M${x} ${y}H${x + width}V${y + height}H${x}Z`
         );
       }
+      case "svg":
       case "g":
         return children
           .map(child => iterateTree(child, layer, transform))
@@ -180,7 +203,7 @@ const build = (string, display, { em = 16, ex = 8, cwidth = 80 * 16 } = {}) => {
     }
   };
 
-  const layers = iterateTree(math.typesetRoot.children[0].children[0]);
+  const layers = iterateTree(math.typesetRoot.children[0]);
 
   const { viewBox, width, height, ascent, descent } = adjustViewBox(
     math.typesetRoot.children[0].attributes.viewBox
