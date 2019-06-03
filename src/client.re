@@ -1,17 +1,13 @@
 let encodeValue = ScilineCalculator.Encoding.encode;
 let decodeValue = ScilineCalculator.Encoding.decode;
 
-let calculate = (node, jsContext): Work.t => {
+let calculate = (node, context): Work.t => {
   let context =
-    jsContext->Belt.Option.map(jsContext =>
-      Js.Dict.entries(jsContext)
-      ->Belt.Array.reduce(Belt.Map.String.empty, (accum, (key, value)) =>
-          Belt.Map.String.set(
-            accum,
-            key,
-            ScilineCalculator.Encoding.encode(value),
-          )
-        )
+    Js.Nullable.bind(context, (. context) =>
+      Js.Dict.map(
+        (. value) => ScilineCalculator.Encoding.encode(value),
+        context,
+      )
     );
   `Calculate((node, context));
 };
@@ -42,7 +38,7 @@ type format = {
 let valueOfString = ScilineCalculator.Types.ofString;
 
 let valueToString = (x, maybeFormat) => {
-  open ScilineCalculator.OutputFormat;
+  open ScilineCalculator.Formatting;
   let f = maybeFormat->Belt.Option.getWithDefault(format());
 
   let (mode, inline) =
@@ -72,7 +68,7 @@ let valueToString = (x, maybeFormat) => {
       ->Belt.Option.getWithDefault(default.decimalMaxMagnitude),
   };
 
-  ScilineCalculator.ToString.toString(~format, ~inline, x);
+  ScilineCalculator.Formatting.toString(~format, ~inline, x);
 };
 
 let insertIndex = (ast, key, index) =>

@@ -6,26 +6,35 @@ type postMessageData = {
   results,
 };
 
-[@bs.val] external postMessage: postMessageData => unit = "postMessage";
-
 [@bs.deriving abstract]
 type onMessageEvent = {data: Work.t};
 
 [@bs.deriving abstract]
-type self = {mutable onmessage: option(onMessageEvent => unit)};
+type self = {
+  mutable onmessage: option(onMessageEvent => unit),
+  postMessage: (. postMessageData) => unit,
+};
 
-[@bs.val] external self: self = "self";
-
-{
+let make = self => {
   let getResults = work =>
     ScilineCalculator.AST.(
       switch (work) {
       | `Calculate(a, context) =>
         let context =
-          context->Belt.Option.map(x =>
-            Belt.Map.String.map(x, ScilineCalculator.Encoding.decode)
-          );
-        let res = eval(~context?, a);
+          switch (Js.Nullable.toOption(context)) {
+          | Some(context) =>
+            context
+            ->Js.Dict.entries
+            ->Belt.Array.reduce(Belt.Map.String.empty, (accum, (key, value)) =>
+                Belt.Map.String.set(
+                  accum,
+                  key,
+                  ScilineCalculator.Encoding.decode(value),
+                )
+              )
+          | None => Belt.Map.String.empty
+          };
+        let res = eval(~context, a);
         [|res|];
       | `SolveRoot(body, initial) =>
         let res = solveRoot(body, initial);
@@ -46,8 +55,8 @@ type self = {mutable onmessage: option(onMessageEvent => unit)};
       }
     );
 
-  let callback = e =>
-    postMessage(
+  let callback = e => {
+    let arg =
       try (
         postMessageData(
           ~didError=false,
@@ -58,8 +67,9 @@ type self = {mutable onmessage: option(onMessageEvent => unit)};
         )
       ) {
       | _ => postMessageData(~didError=true, ~results=[||])
-      },
-    );
+      };
+    (postMessageGet(self))(. arg);
+  };
 
   onmessageSet(self, Some(callback));
 };

@@ -3,7 +3,7 @@ type node = ScilineCalculator.ASTTypes.t;
 type t = [
   | `Calculate(
       node,
-      option(Belt.Map.String.t(ScilineCalculator.Encoding.encoding)),
+      Js.nullable(Js.Dict.t(ScilineCalculator.Encoding.encoding)),
     )
   | `SolveRoot(node, node)
   | `Quadratic(node, node, node)

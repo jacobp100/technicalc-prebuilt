@@ -35,13 +35,19 @@ const createConfig = ({
 module.exports = [
   createConfig({
     name: "client",
-    entry: "./src/client.bs.js",
+    entry: "./src/Client.bs.js",
     outputLibraryTarget: "commonjs2"
   }),
   createConfig({
-    name: "worker",
-    entry: "./src/worker.bs.js",
+    name: "worker-web",
+    entry: "./src/WorkerWeb.bs.js",
     outputLibraryTarget: "var"
+  }),
+  createConfig({
+    name: "worker",
+    entry: "./src/Worker.bs.js",
+    outputLibraryTarget: "commonjs2",
+    target: "node"
   }),
   createConfig({
     name: "math-typeset",
