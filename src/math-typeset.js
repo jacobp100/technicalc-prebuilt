@@ -173,7 +173,6 @@ const build = (string, display, { em = 16, ex = 8, cwidth = 80 * 16 } = {}) => {
         return "";
       case "use": {
         const d = pathDefs.get(attributes["xlink:href"]);
-        if (d == null) console.log(element);
         return pathLayer(layer, transform, d);
       }
       case "path":
