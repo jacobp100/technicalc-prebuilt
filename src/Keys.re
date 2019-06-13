@@ -34,6 +34,7 @@ keys->Js.Dict.set("+", key(~value=One(`Add), ~flags=none));
 keys->Js.Dict.set("-", key(~value=One(`Sub), ~flags=none));
 keys->Js.Dict.set("*", key(~value=One(`Mul), ~flags=none));
 keys->Js.Dict.set("/", key(~value=One(`Div), ~flags=none));
+keys->Js.Dict.set("%", key(~value=One(`Percent), ~flags=premium));
 keys->Js.Dict.set("_", key(~value=One(`Frac2S), ~flags=none));
 keys->Js.Dict.set("^", key(~value=One(`Superscript1), ~flags=none));
 keys->Js.Dict.set("!", key(~value=One(`Factorial), ~flags=premium));
