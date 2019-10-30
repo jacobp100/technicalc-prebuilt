@@ -30,9 +30,9 @@ type format = {
   [@bs.optional]
   base: int,
   [@bs.optional]
-  decimalMinMagnitude: float,
+  decimalMinMagnitude: int,
   [@bs.optional]
-  decimalMaxMagnitude: float,
+  decimalMaxMagnitude: int,
 };
 
 let valueOfString = ScilineCalculator.Types.ofString;
