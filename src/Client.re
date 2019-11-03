@@ -96,3 +96,5 @@ let customAtom = (~value, ~mml) =>
       ->One,
     ~flags=Flags.premium,
   );
+
+let unitsCompatible = ScilineCalculator.Unit_Dimensions.unitsCompatible;

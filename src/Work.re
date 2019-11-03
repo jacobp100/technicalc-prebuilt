@@ -5,6 +5,11 @@ type t = [
       node,
       Js.nullable(Js.Dict.t(ScilineCalculator.Encoding.encoding)),
     )
+  | `ConvertUnits(
+      node,
+      ScilineCalculator.Unit_Types.units,
+      ScilineCalculator.Unit_Types.units,
+    )
   | `SolveRoot(node, node)
   | `Quadratic(node, node, node)
   | `Cubic(node, node, node, node)
