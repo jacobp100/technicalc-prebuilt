@@ -4,9 +4,10 @@ const webpack = require("webpack");
 const createConfig = ({
   name,
   entry,
-  outputLibraryTarget,
+  outputLibraryTarget = "commonjs2",
   target = "web"
 }) => ({
+  mode: "production",
   entry,
   output: {
     filename: `${name}.js`,
@@ -26,17 +27,13 @@ const createConfig = ({
         test: /\/(double-struck|fraktur(-bold)?|monospace|sans-serif(-bold)?(-italic)?|script(-bold)?|tex-caligraphic(-bold)?|tex-oldstyle(-bold)?|tex-variant).js/
       }
     ]
-  },
-  node: {
-    Buffer: false
   }
 });
 
 module.exports = [
   createConfig({
     name: "client",
-    entry: "./src/Client.bs.js",
-    outputLibraryTarget: "commonjs2"
+    entry: "./src/Client.bs.js"
   }),
   createConfig({
     name: "worker-web",
@@ -45,14 +42,11 @@ module.exports = [
   }),
   createConfig({
     name: "worker",
-    entry: "./src/Worker.bs.js",
-    outputLibraryTarget: "commonjs2",
-    target: "node"
+    entry: "./src/Worker.bs.js"
   }),
   createConfig({
     name: "math-typeset",
     entry: "./src/math-typeset.js",
-    outputLibraryTarget: "commonjs2",
     target: "node"
   })
 ];

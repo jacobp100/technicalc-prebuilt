@@ -1550,7 +1550,7 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-mathjax3@^3.0.0-beta.3:
+mathjax3@^3.0.0-beta.4:
   version "3.0.0-beta.4"
   resolved "https://registry.yarnpkg.com/mathjax3/-/mathjax3-3.0.0-beta.4.tgz#e10ad04454e6a511b20c8e092439638dc3a62ea5"
   integrity sha512-WN6qvlv544TZ+yJVfRKJc68uAa59E55LdJa1mnPb8kLKSwupD+FWgppgnrGilbebnchFFl/zvEkPDf79eO/1Ag==

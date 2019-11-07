@@ -14,7 +14,7 @@
   "license": "MIT",
   "devDependencies": {
     "bs-platform": "6",
-    "mathjax3": "^3.0.0-beta.3",
+    "mathjax3": "^3.0.0-beta.4",
     "null-loader": "^2.0.0",
     "sciline-calculator": "../sciline-calculator/",
     "sciline-editor": "../sciline-editor/",

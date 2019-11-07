@@ -1,7 +1,7 @@
 let encodeValue = ScilineCalculator.Encoding.encode;
 let decodeValue = ScilineCalculator.Encoding.decode;
 
-let calculate = (node, context): Work.t => {
+let calculate = (body, context): Work.t => {
   let context =
     Js.Nullable.bind(context, (. context) =>
       Js.Dict.map(
@@ -9,8 +9,10 @@ let calculate = (node, context): Work.t => {
         context,
       )
     );
-  `Calculate((node, context));
+  `Calculate((body, context));
 };
+let convertUnits = (body, fromUnits, toUnits): Work.t =>
+  `ConvertUnits((body, fromUnits, toUnits));
 let solveRoot = (body, initial): Work.t => `SolveRoot((body, initial));
 let quadratic = (a, b, c): Work.t => `Quadratic((a, b, c));
 let cubic = (a, b, c, d): Work.t => `Cubic((a, b, c, d));
@@ -96,6 +98,10 @@ let customAtom = (~value, ~mml) =>
       ->One,
     ~flags=Flags.premium,
   );
+
+let unitMml = ScilineEditor.MML_Units.unitMml;
+let unitPowerMml = ScilineEditor.MML_Units.unitPowerMml;
+let unitsMml = ScilineEditor.MML_Units.unitsMml;
 
 let units = Units.units;
 
