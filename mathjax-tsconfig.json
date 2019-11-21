@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "downlevelIteration": true,
+    "module": "ES6",
+    "lib": ["es6", "dom"],
+    "noLib": false,
+    "outDir": "mathjax3-rebuilt"
+  },
+  "include": ["node_modules/mathjax3/mathjax3-ts/**/*"]
+}

@@ -2,10 +2,15 @@
   "name": "sciline-prebuilt",
   "version": "0.1.0",
   "scripts": {
-    "clean": "bsb -clean-world",
-    "build": "bsb -make-world",
-    "watch": "bsb -make-world -w",
-    "bundle": "webpack"
+    "clean-sciline": "bsb -clean-world",
+    "build-sciline": "bsb -make-world",
+    "watch-sciline": "bsb -make-world -w",
+    "build-mathjax": "tsc -p mathjax-tsconfig.json || true",
+    "build-fonts": "node font-gen",
+    "build-bundles": "webpack",
+    "watch-bundles": "yarn webpack --watch",
+    "clean": "yarn clean-sciline",
+    "build": "yarn build-sciline && yarn build-mathjax && yarn build-fonts && yarn build-bundles"
   },
   "keywords": [
     "BuckleScript"
@@ -15,9 +20,9 @@
   "devDependencies": {
     "bs-platform": "6",
     "mathjax3": "^3.0.0-beta.4",
-    "null-loader": "^2.0.0",
     "sciline-calculator": "../sciline-calculator/",
     "sciline-editor": "../sciline-editor/",
+    "typescript": "2.3",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.1"
   },

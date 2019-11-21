@@ -20,14 +20,16 @@ const createConfig = ({
       "bs-platform": path.resolve(__dirname, "node_modules/bs-platform")
     }
   },
-  module: {
-    rules: [
-      {
-        use: "null-loader",
-        test: /\/(double-struck|fraktur(-bold)?|monospace|sans-serif(-bold)?(-italic)?|script(-bold)?|tex-caligraphic(-bold)?|tex-oldstyle(-bold)?|tex-variant).js/
-      }
-    ]
-  }
+  plugins: [
+    new webpack.NormalModuleReplacementPlugin(
+      /svg[\\\/]fonts[\\\/]tex[\\\/].*.js$/,
+      require.resolve("./mathjax-stubs/fonts")
+    ),
+    new webpack.NormalModuleReplacementPlugin(
+      /util[\\\/]Entities.js$/,
+      require.resolve("./mathjax-stubs/entities")
+    )
+  ]
 });
 
 module.exports = [
