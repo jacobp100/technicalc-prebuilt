@@ -1,9 +1,9 @@
-const { MathML } = require("../mathjax3-prebuilt/input/mathml");
-const { SVG } = require("../mathjax3-prebuilt/output/svg");
+const { MathML } = require("mathjax3/mathjax3/input/mathml");
+const { SVG } = require("mathjax3/mathjax3/output/svg");
 const {
   HTMLDocument
-} = require("../mathjax3-prebuilt/handlers/html/HTMLDocument");
-const { liteAdaptor } = require("../mathjax3-prebuilt/adaptors/liteAdaptor");
+} = require("mathjax3/mathjax3/handlers/html/HTMLDocument");
+const { liteAdaptor } = require("mathjax3/mathjax3/adaptors/liteAdaptor");
 
 const toNumberDefaultNaN = x => (x !== "" ? Number(x) : NaN);
 
