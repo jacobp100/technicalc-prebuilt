@@ -8,7 +8,7 @@ const { liteAdaptor } = require("mathjax3/mathjax3/adaptors/liteAdaptor");
 const toNumberDefaultNaN = x => (x !== "" ? Number(x) : NaN);
 
 const parseTransform = str => {
-  const out = { s: 1, tX: 0, tY: 0 };
+  const out = { sX: 1, sY: 1, tX: 0, tY: 0 };
 
   if (!str) return out;
 
@@ -21,7 +21,8 @@ const parseTransform = str => {
         out.tY += Number(match[3]);
         break;
       case "scale":
-        out.s *= Number(match[2]);
+        out.sX *= Number(match[2]);
+        out.sY *= Number(match[3] || match[2]);
         break;
       default:
         throw new Error(`Unknown transform ${match[1]}`);
@@ -33,9 +34,9 @@ const parseTransform = str => {
 
 const normalizeCoordinate = x => Math.floor(x) / 1e3;
 const pathRegexp = /([A-Z])\s*(-?[\d.]*)\s*,?\s*(-?[\d.]*)\s*,?\s*(-?[\d.]*)\s*,?\s*(-?[\d.]*)\s*,?\s*(-?[\d.]*)\s*,?\s*(-?[\d.]*)\s*/gi;
-const transformPathData = ({ s, tX, tY }, d) => {
-  const x = n => normalizeCoordinate(+n * s + tX);
-  const y = n => normalizeCoordinate(-(+n * s + tY));
+const transformPathData = ({ sX, sY, tX, tY }, d) => {
+  const x = n => normalizeCoordinate(+n * sX + tX);
+  const y = n => normalizeCoordinate(-(+n * sY + tY));
   return d.replace(pathRegexp, (fullMatch, command, a, b, c, d, e, f) => {
     switch (command) {
       case "M":
@@ -59,9 +60,10 @@ const transformPathData = ({ s, tX, tY }, d) => {
 };
 
 const combineTransforms = (a, b) => ({
-  s: a.s * b.s,
-  tX: a.tX + b.tX * a.s,
-  tY: a.tY + b.tY * a.s
+  sX: a.sX * b.sX,
+  sY: a.sY * b.sY,
+  tX: a.tX + b.tX * a.sX,
+  tY: a.tY + b.tY * a.sY
 });
 
 const pathLayer = (c, transform, pathData) => ({
@@ -140,20 +142,26 @@ const build = (string, display, { em = 16, ex = 8, cwidth = 80 * 16 } = {}) => {
   const iterateTree = (
     element,
     inputLayer = "default",
-    inputTransform = { s: 1, tX: 0, tY: 0 }
+    inputTransform = { sX: 1, sY: 1, tX: 0, tY: 0 }
   ) => {
     const { kind, attributes = {}, children } = element;
     const { id, transform: cssTransform } = attributes;
-    const layer = (attributes.class || inputLayer).trim();
+    let layer = (attributes.class || inputLayer).trim();
 
-    const transform = combineTransforms(
-      inputTransform,
-      parseTransform(cssTransform)
-    );
+    const nodeTransform = parseTransform(cssTransform);
+    if (kind === "svg" && attributes.x != null && attributes.y != null) {
+      // Really tall brackets need this stuff applied
+      // The 0.707 is one scaling factor
+      nodeTransform.tX = +attributes.x;
+      nodeTransform.tY = +attributes.y;
+      nodeTransform.sY *= 0.707;
+    }
+
+    const transform = combineTransforms(inputTransform, nodeTransform);
 
     if (id != null) {
       const [current, after] = id.split(":").map(toNumberDefaultNaN);
-      let { tX: x, tY: y, s: scale } = transform;
+      let { tX: x, tY: y, sY: scale } = transform;
       x /= 1e3;
       y /= 1e3;
 
