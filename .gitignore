@@ -14,7 +14,3 @@ coverage
 
 /fonts-prebuilt
 /mathjax3-prebuilt
-
-/client.js
-/worker*.js
-/math-typeset.js

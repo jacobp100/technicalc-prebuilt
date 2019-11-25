@@ -9,7 +9,7 @@
     "build-bundles": "webpack",
     "watch-bundles": "yarn webpack --watch",
     "clean": "yarn clean-sciline",
-    "build": "yarn build-sciline && yarn build-fonts && yarn build-bundles"
+    "build": "yarn clean-sciline && yarn build-sciline && yarn build-fonts && yarn build-bundles"
   },
   "keywords": [
     "BuckleScript"

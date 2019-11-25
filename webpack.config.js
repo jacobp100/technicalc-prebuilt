@@ -11,7 +11,7 @@ const createConfig = ({
   entry,
   output: {
     filename: `${name}.js`,
-    path: __dirname,
+    path: path.resolve(__dirname, "dist"),
     libraryTarget: outputLibraryTarget
   },
   target,
@@ -37,11 +37,11 @@ module.exports = [
     name: "client",
     entry: "./src/Client.bs.js"
   }),
-  createConfig({
-    name: "worker-web",
-    entry: "./src/WorkerWeb.bs.js",
-    outputLibraryTarget: "var"
-  }),
+  // createConfig({
+  //   name: "worker-web",
+  //   entry: "./src/WorkerWeb.bs.js",
+  //   outputLibraryTarget: "var"
+  // }),
   createConfig({
     name: "worker",
     entry: "./src/Worker.bs.js"
