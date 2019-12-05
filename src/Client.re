@@ -89,15 +89,10 @@ let parse = elements =>
   };
 
 let keys = Keys.keys;
-let flags = Flags.flags;
 
 let customAtom = (~value, ~mml) =>
-  Keys.key(
-    ~value=
-      `CustomAtomS({ScilineEditor.AST_Types.value: encodeValue(value), mml})
-      ->One,
-    ~flags=Flags.premium,
-  );
+  `CustomAtomS({ScilineEditor.AST_Types.value: encodeValue(value), mml})
+  ->Keys.One;
 
 let unitMml = ScilineEditor.MML_Units.unitMml;
 let unitPowerMml = ScilineEditor.MML_Units.unitPowerMml;
