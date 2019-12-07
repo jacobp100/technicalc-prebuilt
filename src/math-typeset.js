@@ -77,16 +77,14 @@ const mergeLayersInto = (out, b) => {
   return out;
 };
 
-const adjustViewBox = input => {
+const extractViewbox = input => {
   let [x, y, width, height] = input.split(" ").map(Number);
-  const minYScale = 1.2;
   x = x / 1e3;
-  y = Math.min(y / 1e3, -0.8 * minYScale);
+  y = Math.min(y / 1e3, -0.8);
   width = width / 1e3;
-  height = Math.max(height / 1e3, 1 * minYScale);
-  const viewBox = `${x} ${y} ${width} ${height}`;
+  height = Math.max(height / 1e3, 1);
   const ascent = -y;
-  return { viewBox, width, height, ascent };
+  return { width, height, ascent };
 };
 
 const mml = new MathML();
@@ -212,11 +210,11 @@ const build = (string, display, { em = 16, ex = 8, cwidth = 80 * 16 } = {}) => {
 
   const layers = iterateTree(math.typesetRoot.children[0]);
 
-  const { viewBox, width, height, ascent } = adjustViewBox(
+  const { width, height, ascent } = extractViewbox(
     math.typesetRoot.children[0].attributes.viewBox
   );
 
-  return { viewBox, width, height, layers, ascent, positionMap };
+  return { width, height, ascent, layers, positionMap };
 };
 
 export default build;

@@ -99,10 +99,10 @@ let customAtom = (~value, ~mml) =>
     ~flags=Flags.premium,
   );
 
+let unitsCompatible = ScilineCalculator.Unit_Dimensions.unitsCompatible;
+
 let unitMml = ScilineEditor.MML_Units.unitMml;
 let unitPowerMml = ScilineEditor.MML_Units.unitPowerMml;
 let unitsMml = ScilineEditor.MML_Units.unitsMml;
 
 let units = Units.units;
-
-let unitsCompatible = ScilineCalculator.Unit_Dimensions.unitsCompatible;

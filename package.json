@@ -5,11 +5,12 @@
     "clean-sciline": "bsb -clean-world",
     "build-sciline": "bsb -make-world",
     "watch-sciline": "bsb -make-world -w",
+    "build-data": "node -r esm data",
     "build-fonts": "node font-gen",
     "build-bundles": "webpack",
     "watch-bundles": "yarn webpack --watch",
     "clean": "yarn clean-sciline",
-    "build": "yarn clean-sciline && yarn build-sciline && yarn build-fonts && yarn build-bundles"
+    "build": "yarn build-sciline && yarn build-data && yarn build-fonts && yarn build-bundles"
   },
   "keywords": [
     "BuckleScript"
@@ -17,8 +18,10 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "bs-platform": "6",
+    "bs-platform": "7",
+    "esm": "^3.2.25",
     "mathjax3": "^3.0.0-beta.4",
+    "node-fetch": "^2.6.0",
     "sciline-calculator": "../sciline-calculator/",
     "sciline-editor": "../sciline-editor",
     "webpack": "^4.30.0",
