@@ -62,7 +62,7 @@ let make = self => {
 
   let callback = e => {
     let arg =
-      try (
+      try(
         postMessageData(
           ~didError=false,
           ~results=
