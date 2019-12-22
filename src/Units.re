@@ -13,12 +13,12 @@ let units = [|
     title: "Time",
     data: [|
       [|
-        {title: "Second", unit: Second, primary: true},
         {title: "Millisecond", unit: Millisecond, primary: true},
         {title: "Femtosecond", unit: Femtosecond, primary: false},
         {title: "Picosecond", unit: Picosecond, primary: false},
         {title: "Nanosecond", unit: Nanosecond, primary: false},
         {title: "Microsecond", unit: Microsecond, primary: false},
+        {title: "Second", unit: Second, primary: true},
       |],
       [|{title: "Minute", unit: Minute, primary: true}|],
       [|{title: "Hour", unit: Hour, primary: true}|],
@@ -115,18 +115,13 @@ let units = [|
     title: "Power",
     data: [|
       [|
-        {title: "Watt", unit: Watt, primary: true},
-        {title: "Femtojoule", unit: Femtojoule, primary: false},
-        {title: "Picojoule", unit: Picojoule, primary: false},
         {title: "Nanojoule", unit: Nanojoule, primary: false},
         {title: "Microjoule", unit: Microjoule, primary: false},
         {title: "Millijoule", unit: Millijoule, primary: false},
-        {title: "Centijoule", unit: Centijoule, primary: false},
+        {title: "Watt", unit: Watt, primary: true},
         {title: "Kilojoule", unit: Kilojoule, primary: false},
         {title: "Megajoule", unit: Megajoule, primary: false},
         {title: "Gigajoule", unit: Gigajoule, primary: false},
-        {title: "Terajoule", unit: Terajoule, primary: false},
-        {title: "Petajoule", unit: Petajoule, primary: false},
       |],
     |],
   },
