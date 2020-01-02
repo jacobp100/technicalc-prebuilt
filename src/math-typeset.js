@@ -34,10 +34,11 @@ const parseTransform = str => {
 
 const normalizeCoordinate = x => Math.floor(x) / 1e3;
 const pathRegexp = /([A-Z])\s*(-?[\d.]*)\s*,?\s*(-?[\d.]*)\s*,?\s*(-?[\d.]*)\s*,?\s*(-?[\d.]*)\s*,?\s*(-?[\d.]*)\s*,?\s*(-?[\d.]*)\s*/gi;
-const transformPathData = ({ sX, sY, tX, tY }, d) => {
+const transformPathData = ({ sX, sY, tX, tY }, pathData) => {
   const x = n => normalizeCoordinate(+n * sX + tX);
   const y = n => normalizeCoordinate(-(+n * sY + tY));
-  return d.replace(pathRegexp, (fullMatch, command, a, b, c, d, e, f) => {
+
+  const replacer = (fullMatch, command, a, b, c, d, e, f) => {
     switch (command) {
       case "M":
       case "L":
@@ -54,9 +55,11 @@ const transformPathData = ({ sX, sY, tX, tY }, d) => {
       case "Z":
         return "Z";
       default:
-        throw new Error(`Unhandled path command ${command}`);
+        throw new Error(`Unhandled path command ${command} (${pathData})`);
     }
-  });
+  };
+
+  return pathData.replace(pathRegexp, replacer);
 };
 
 const combineTransforms = (a, b) => ({
@@ -126,11 +129,10 @@ const build = (string, display, { em = 16, ex = 8, cwidth = 80 * 16 } = {}) => {
 
   const pathDefs = new Map();
   const addPathDef = element => {
-    const { kind, attributes = {}, children } = element;
-    const { id } = attributes;
+    const { kind, attributes = {} } = element;
     switch (kind) {
       case "path":
-        pathDefs.set(`#${id}`, attributes.d);
+        pathDefs.set(`#${attributes.id}`, attributes.d);
         break;
       default:
         throw new Error(`Unknown element: ${element.kind}`);
