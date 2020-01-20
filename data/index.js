@@ -13,6 +13,7 @@ const MmlVisitor = require("mathjax3/mathjax3/core/MmlTree/SerializedMmlVisitor.
 
 const { valueOfString, valueToString } = require("../dist/client");
 const { default: mathTypeset } = require("../dist/math-typeset");
+const titles = require("./titles");
 
 const Typeset = (string, display) => {
   const tex = new TeX({ packages: AllPackages.sort() });
@@ -160,7 +161,7 @@ const formats = [
 let out = data.map(({ title, name: n, tex }, i) => {
   let formattedTex = tex;
   formattedTex = formattedTex.replace(
-    /(?:\$([^$]*)\$|([^$]+))/g,
+    /(?:\$([^$]*)\$|([^$,]+))/g,
     (full, tex, raw) => {
       if (tex) return tex;
       if (raw) return `{\\rm ${raw}}`;
@@ -184,7 +185,7 @@ let out = data.map(({ title, name: n, tex }, i) => {
       .replace("magnetic", "mag.")
       .trim();
 
-  const { value, valueMml, valueUtf } = nist.find(
+  const { value, valueUtf } = nist.find(
     nist => normalizeTitle(title) === normalizeTitle(nist.title)
   );
   let symbolMml;
@@ -215,7 +216,15 @@ let out = data.map(({ title, name: n, tex }, i) => {
   return { title, value, symbolMml, symbolMath, valueUtf };
 });
 
-out = out.filter(t => !/in [KMG]?eV/.test(t.title));
+out = out
+  .filter(t => !/in [KMG]?eV/.test(t.title))
+  .filter(t => {
+    const filter = titles.get(t.title);
+    if (filter == null) {
+      throw new Error(`Missing filter for ${t.title}`);
+    }
+    return filter;
+  });
 
 const test = new Map();
 out.forEach(({ title, symbolMml }) => {
