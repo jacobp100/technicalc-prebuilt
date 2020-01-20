@@ -1,15 +1,10 @@
-type results = array(ScilineCalculator.Encoding.encoding);
-
-[@bs.deriving abstract]
 type postMessageData = {
+  results: array(ScilineCalculator.Encoding.encoding),
   didError: bool,
-  results,
 };
 
-[@bs.deriving abstract]
 type onMessageEvent = {data: Work.t};
 
-[@bs.deriving abstract]
 type self = {
   mutable onmessage: option(onMessageEvent => unit),
   postMessage: (. postMessageData) => unit,
@@ -62,19 +57,17 @@ let make = self => {
 
   let callback = e => {
     let arg =
-      try(
-        postMessageData(
-          ~didError=false,
-          ~results=
-            dataGet(e)
-            ->getResults
-            ->Belt.Array.map(ScilineCalculator.Encoding.encode),
-        )
-      ) {
-      | _ => postMessageData(~didError=true, ~results=[||])
+      try({
+        results:
+          e.data
+          ->getResults
+          ->Belt.Array.map(ScilineCalculator.Encoding.encode),
+        didError: false,
+      }) {
+      | _ => {results: [||], didError: true}
       };
-    (postMessageGet(self))(. arg);
+    self.postMessage(. arg);
   };
 
-  onmessageSet(self, Some(callback));
+  self.onmessage = Some(callback);
 };

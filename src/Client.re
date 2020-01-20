@@ -1,6 +1,8 @@
 let encodeValue = ScilineCalculator.Encoding.encode;
 let decodeValue = ScilineCalculator.Encoding.decode;
 
+let valueIsNaN = x => x == `NaN;
+
 let calculate = (body, context): Work.t => {
   let context =
     Js.Nullable.bind(context, (. context) =>
