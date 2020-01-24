@@ -98,8 +98,8 @@ let customAtom = (~value, ~mml) =>
 
 let unitsCompatible = ScilineCalculator.Unit_Dimensions.unitsCompatible;
 
-let unitMml = ScilineEditor.MML_Units.unitMml;
-let unitPowerMml = ScilineEditor.MML_Units.unitPowerMml;
-let unitsMml = ScilineEditor.MML_Units.unitsMml;
+let unitMml = ScilineEditor.Mml_Units.unitMml;
+let unitPowerMml = ScilineEditor.Mml_Units.unitPowerMml;
+let unitsMml = ScilineEditor.Mml_Units.unitsMml;
 
 let units = Units.units;
