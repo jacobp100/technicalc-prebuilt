@@ -30,9 +30,11 @@ type format = {
   [@bs.optional]
   style: string,
   [@bs.optional]
+  base: int,
+  [@bs.optional]
   precision: int,
   [@bs.optional]
-  base: int,
+  digitGrouping: bool,
   [@bs.optional]
   decimalMinMagnitude: int,
   [@bs.optional]
@@ -43,6 +45,7 @@ let valueOfString = ScilineCalculator.Types.ofString;
 
 let valueToString = (x, maybeFormat) => {
   open ScilineCalculator.Formatting;
+
   let f = maybeFormat->Belt.Option.getWithDefault(format());
 
   let (mode, inline) =
@@ -61,9 +64,11 @@ let valueToString = (x, maybeFormat) => {
       | Some("scientific") => Scientific
       | _ => Natural
       },
+    base: baseGet(f)->Belt.Option.getWithDefault(default.base),
     precision:
       precisionGet(f)->Belt.Option.getWithDefault(default.precision),
-    base: baseGet(f)->Belt.Option.getWithDefault(default.base),
+    digitGrouping:
+      digitGroupingGet(f)->Belt.Option.getWithDefault(default.digitGrouping),
     decimalMinMagnitude:
       decimalMinMagnitudeGet(f)
       ->Belt.Option.getWithDefault(default.decimalMinMagnitude),
@@ -83,7 +88,19 @@ let insertIndex = (ast, key, index) =>
     ScilineEditor.AST_Insert.insertArrayIndex(ast, elements, index)
   };
 let deleteIndex = ScilineEditor.AST_Delete.deleteIndex;
-let toMml = ScilineEditor.Mml.create;
+let toMml = (x, maybeFormat) => {
+  let digitGrouping =
+    switch (maybeFormat) {
+    | Some(f) => digitGroupingGet(f)
+    | None => None
+    };
+  let digitGrouping =
+    switch (digitGrouping) {
+    | Some(digitGrouping) => digitGrouping
+    | None => true
+    };
+  ScilineEditor.Mml.create(~digitGrouping, x);
+};
 let parse = elements =>
   switch (ScilineEditor.Value.parse(elements)) {
   | `Ok(node) => (None, Some(node))
