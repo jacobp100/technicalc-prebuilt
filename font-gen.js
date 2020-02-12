@@ -2,18 +2,14 @@ const fs = require("fs");
 const path = require("path");
 const {
   boldItalic
-} = require("mathjax3/mathjax3/output/svg/fonts/tex/bold-italic");
-const { bold } = require("mathjax3/mathjax3/output/svg/fonts/tex/bold");
-const { italic } = require("mathjax3/mathjax3/output/svg/fonts/tex/italic");
-const { largeop } = require("mathjax3/mathjax3/output/svg/fonts/tex/largeop");
-const { normal } = require("mathjax3/mathjax3/output/svg/fonts/tex/normal");
-const { smallop } = require("mathjax3/mathjax3/output/svg/fonts/tex/smallop");
-const {
-  texSize3
-} = require("mathjax3/mathjax3/output/svg/fonts/tex/tex-size3");
-const {
-  texSize4
-} = require("mathjax3/mathjax3/output/svg/fonts/tex/tex-size4");
+} = require("mathjax-full/js/output/svg/fonts/tex/bold-italic");
+const { bold } = require("mathjax-full/js/output/svg/fonts/tex/bold");
+const { italic } = require("mathjax-full/js/output/svg/fonts/tex/italic");
+const { largeop } = require("mathjax-full/js/output/svg/fonts/tex/largeop");
+const { normal } = require("mathjax-full/js/output/svg/fonts/tex/normal");
+const { smallop } = require("mathjax-full/js/output/svg/fonts/tex/smallop");
+const { texSize3 } = require("mathjax-full/js/output/svg/fonts/tex/tex-size3");
+const { texSize4 } = require("mathjax-full/js/output/svg/fonts/tex/tex-size4");
 
 const skewX = (char, deg) => {
   const c = Math.atan((deg * 2 * Math.PI) / 360);

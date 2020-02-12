@@ -7,25 +7,26 @@
     "watch-sciline": "bsb -make-world -w",
     "build-data": "node -r esm data",
     "build-fonts": "node font-gen",
+    "build-mathjax": "tsc || :",
     "build-bundles": "webpack",
     "watch-bundles": "yarn webpack --watch",
     "clean": "yarn clean-sciline",
-    "build": "yarn build-sciline && yarn build-bundles && yarn build-data && yarn build-fonts"
+    "build-static-content": "yarn build-mathjax && yarn build-fonts",
+    "build-modules": "yarn build-sciline && yarn build-bundles && yarn build-data",
+    "build": "yarn build-static-content && build-modules"
   },
-  "keywords": [
-    "BuckleScript"
-  ],
+  "keywords": [],
   "author": "",
   "license": "MIT",
   "devDependencies": {
     "bs-platform": "7",
     "esm": "^3.2.25",
-    "mathjax3": "^3.0.0-beta.4",
+    "mathjax-full": "^3.0.1",
     "node-fetch": "^2.6.0",
     "sciline-calculator": "../sciline-calculator/",
     "sciline-editor": "../sciline-editor",
+    "typescript": "~3.5.2",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.1"
-  },
-  "dependencies": {}
+  }
 }

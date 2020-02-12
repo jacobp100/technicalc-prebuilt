@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "downlevelIteration": true,
+    "module": "ES6",
+    "removeComments": true,
+    "lib": ["es6", "dom"],
+    "outDir": "mathjax-prebuilt"
+  },
+  "include": ["node_modules/mathjax-full/ts/**/*"],
+  "exclude": ["js", "es5", "components"]
+}

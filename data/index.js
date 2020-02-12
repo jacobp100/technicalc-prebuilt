@@ -1,14 +1,14 @@
 // Android font: GFS Didot
-const { TeX } = require("mathjax3/mathjax3/input/tex.js");
-const { SVG } = require("mathjax3/mathjax3/output/svg.js");
+const { TeX } = require("mathjax-full/js/input/tex.js");
+const { SVG } = require("mathjax-full/js/output/svg.js");
 const {
   HTMLDocument
-} = require("mathjax3/mathjax3/handlers/html/HTMLDocument.js");
-const { liteAdaptor } = require("mathjax3/mathjax3/adaptors/liteAdaptor.js");
+} = require("mathjax-full/js/handlers/html/HTMLDocument.js");
+const { liteAdaptor } = require("mathjax-full/js/adaptors/liteAdaptor.js");
 
-const { AllPackages } = require("mathjax3/mathjax3/input/tex/AllPackages.js");
+const { AllPackages } = require("mathjax-full/js/input/tex/AllPackages.js");
 
-const MmlVisitor = require("mathjax3/mathjax3/core/MmlTree/SerializedMmlVisitor.js")
+const MmlVisitor = require("mathjax-full/js/core/MmlTree/SerializedMmlVisitor.js")
   .SerializedMmlVisitor;
 
 const { valueOfString, valueToString } = require("../dist/client");
