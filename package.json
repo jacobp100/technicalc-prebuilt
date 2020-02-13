@@ -13,7 +13,7 @@
     "clean": "yarn clean-sciline",
     "build-static-content": "yarn build-mathjax && yarn build-fonts",
     "build-modules": "yarn build-sciline && yarn build-bundles && yarn build-data",
-    "build": "yarn build-static-content && build-modules"
+    "build": "yarn build-static-content && yarn build-modules"
   },
   "keywords": [],
   "author": "",

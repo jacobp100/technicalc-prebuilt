@@ -12,7 +12,6 @@ const MmlVisitor = require("mathjax-full/js/core/MmlTree/SerializedMmlVisitor.js
   .SerializedMmlVisitor;
 
 const { valueOfString, valueToString } = require("../dist/client");
-const { default: mathTypeset } = require("../dist/math-typeset");
 const titles = require("./titles");
 
 const Typeset = (string, display) => {
@@ -189,19 +188,18 @@ let out = data.map(({ title, name: n, tex }, i) => {
     nist => normalizeTitle(title) === normalizeTitle(nist.title)
   );
   let symbolMml;
-  let symbolMath;
 
   try {
     symbolMml = unnestDocument(Typeset(formattedTex, true));
+    // Remove mrows that only contain one element
+    symbolMml = symbolMml.replace(
+      /<mrow>(<(\w+)[^>]*>[^<]*<\/\2>)<\/mrow>/g,
+      "$1"
+    );
 
     if (symbolMml.includes("merror")) {
       throw new Error(`Invalid tex ${tex}`);
     }
-
-    symbolMath = {
-      ...mathTypeset(`<math display="inline">${symbolMml}</math>`),
-      positionMap: null
-    };
   } catch (e) {
     console.log("FAILED");
     console.log(e);
@@ -213,7 +211,7 @@ let out = data.map(({ title, name: n, tex }, i) => {
 
   title = title[0].toUpperCase() + title.slice(1);
 
-  return { title, value, symbolMml, symbolMath, valueUtf };
+  return { title, value, symbolMml, valueUtf };
 });
 
 out = out
