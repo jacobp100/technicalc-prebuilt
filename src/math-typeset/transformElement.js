@@ -10,8 +10,6 @@ const fillOpacities = {
 };
 
 export default ({ kind, attributes }, children, index) => {
-  console.log(kind, attributes);
-
   switch (kind) {
     case "svg":
       return attributes.xmlns != null
@@ -21,10 +19,7 @@ export default ({ kind, attributes }, children, index) => {
           // x/y attributes broken in rn-svg SVG elements so done in a G
           React.createElement(
             G,
-            {
-              key: index,
-              transform: `translate(${attributes.x} ${attributes.y})`
-            },
+            { key: index, x: attributes.x, y: attributes.y },
             React.createElement(
               Svg,
               {
