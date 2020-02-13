@@ -15,6 +15,7 @@ const createConfig = ({
     libraryTarget: outputLibraryTarget
   },
   target,
+  externals: ["react", /^react-native-svg/],
   resolve: {
     alias: {
       "bs-platform": path.resolve(__dirname, "node_modules/bs-platform")
@@ -48,7 +49,7 @@ module.exports = [
   }),
   createConfig({
     name: "math-typeset",
-    entry: "./src/math-typeset.js",
+    entry: "./src/math-typeset/index.js",
     target: "node"
   })
 ];
