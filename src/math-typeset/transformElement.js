@@ -9,26 +9,44 @@ const fillOpacities = {
   invalid: 0.5
 };
 
+const FillContext = React.createContext("black");
+
+const TopLevelSvg = props =>
+  React.createElement(
+    FillContext.Provider,
+    { value: props.fill },
+    React.createElement(Svg, props)
+  );
+
+const InheritFillSvg = ({ x, y, ...props }) => {
+  const fill = React.useContext(FillContext);
+
+  // x/y attributes broken in rn-svg SVG elements so done in a G
+  return React.createElement(
+    G,
+    { x, y },
+    React.createElement(Svg, { fill, ...props })
+  );
+};
+
 export default ({ kind, attributes }, children, index) => {
   switch (kind) {
     case "svg":
       return attributes.xmlns != null
         ? // Top level svg - most props set in MathView
-          React.createElement(Svg, null, children)
+          React.createElement(TopLevelSvg, null, children)
         : // Used as a clip mask
-          // x/y attributes broken in rn-svg SVG elements so done in a G
           React.createElement(
-            G,
-            { key: index, x: attributes.x, y: attributes.y },
-            React.createElement(
-              Svg,
-              {
-                viewBox: attributes.viewBox,
-                width: attributes.width,
-                height: attributes.height
-              },
-              children
-            )
+            InheritFillSvg,
+            {
+              key: index,
+              viewBox: attributes.viewBox,
+              x: attributes.x,
+              y: attributes.y,
+              width: attributes.width,
+              height: attributes.height
+            },
+            children
           );
     case "g":
       return React.createElement(
