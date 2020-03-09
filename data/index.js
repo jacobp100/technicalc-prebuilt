@@ -11,7 +11,7 @@ const { AllPackages } = require("mathjax-full/js/input/tex/AllPackages.js");
 const MmlVisitor = require("mathjax-full/js/core/MmlTree/SerializedMmlVisitor.js")
   .SerializedMmlVisitor;
 
-const { valueOfString, valueToString } = require("../dist/client");
+const { Value } = require("../dist/client");
 const titles = require("./titles");
 
 const Typeset = (string, display) => {
@@ -87,10 +87,11 @@ const nist = require("fs")
     if (value == null) throw new Error("Oh");
 
     value = value.replace(/\s/g, "").replace("...", "");
-    let valueMml = valueToString(valueOfString(value), {
-      mode: "mathml-inline",
-      style: "decimal"
-    });
+    let valueMml = Value.toMml(
+      Value.ofString(value),
+      { style: "decimal" },
+      true /* inline */
+    );
     if (units) {
       const unitsMml = units
         .split(" ")
@@ -119,8 +120,8 @@ const nist = require("fs")
       throw new Error(`Invalid MML for ${title}`);
     }
 
-    let valueUtf = valueToString(valueOfString(value), {
-      mode: "string",
+    let valueUtf = Value.toMml(Value.ofString(value), {
+      mode: "string", // See note in Client
       style: "decimal"
     }).replace(/e(.+)/, "×10^$1");
 

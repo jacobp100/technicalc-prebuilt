@@ -1,28 +1,3 @@
-let encodeValue = ScilineCalculator.Encoding.encode;
-let decodeValue = ScilineCalculator.Encoding.decode;
-
-let valueIsNaN = x => x == `NaN;
-
-let calculate = (body, context): Work.t => {
-  let context =
-    Js.Nullable.bind(context, (. context) =>
-      Js.Dict.map(
-        (. value) => ScilineCalculator.Encoding.encode(value),
-        context,
-      )
-    );
-  `Calculate((body, context));
-};
-let convertUnits = (body, fromUnits, toUnits): Work.t =>
-  `ConvertUnits((body, fromUnits, toUnits));
-let solveRoot = (body, initial): Work.t => `SolveRoot((body, initial));
-let quadratic = (a, b, c): Work.t => `Quadratic((a, b, c));
-let cubic = (a, b, c, d): Work.t => `Cubic((a, b, c, d));
-let var2 = (x0, y0, c0, x1, y1, c1): Work.t =>
-  `Var2((x0, y0, c0, x1, y1, c1));
-let var3 = (x0, y0, z0, c0, x1, y1, z1, c1, x2, y2, z2, c2): Work.t =>
-  `Var3((x0, y0, z0, c0, x1, y1, z1, c1, x2, y2, z2, c2));
-
 [@bs.deriving abstract]
 type format = {
   [@bs.optional]
@@ -41,82 +16,114 @@ type format = {
   decimalMaxMagnitude: int,
 };
 
-let valueOfString = ScilineCalculator.Types.ofString;
-
-let valueToString = (x, maybeFormat) => {
-  open ScilineCalculator.Formatting;
-
-  let f = maybeFormat->Belt.Option.getWithDefault(format());
-
-  let (mode, inline) =
-    switch (modeGet(f)) {
-    | Some("tex") => (Tex, false)
-    | Some("mathml") => (MathML, false)
-    | Some("mathml-inline") => (MathML, true)
-    | _ => (String, false)
+module Editor = {
+  let insertIndex = (ast, key, index) =>
+    switch (key) {
+    | Keys.One(element) =>
+      ScilineEditor.AST_Insert.insertIndex(ast, element, index)
+    | Many(elements) =>
+      ScilineEditor.AST_Insert.insertArrayIndex(ast, elements, index)
     };
+  let deleteIndex = ScilineEditor.AST_Delete.deleteIndex;
 
-  let format = {
-    mode,
-    style:
-      switch (styleGet(f)) {
-      | Some("decimal") => Decimal
-      | Some("scientific") => Scientific
-      | _ => Natural
-      },
-    base: baseGet(f)->Belt.Option.getWithDefault(default.base),
-    precision:
-      precisionGet(f)->Belt.Option.getWithDefault(default.precision),
-    digitGrouping:
-      digitGroupingGet(f)->Belt.Option.getWithDefault(default.digitGrouping),
-    decimalMinMagnitude:
-      decimalMinMagnitudeGet(f)
-      ->Belt.Option.getWithDefault(default.decimalMinMagnitude),
-    decimalMaxMagnitude:
-      decimalMaxMagnitudeGet(f)
-      ->Belt.Option.getWithDefault(default.decimalMaxMagnitude),
+  let toMml = (x, maybeFormat, maybeInline) => {
+    let digitGrouping =
+      Belt.Option.flatMap(maybeFormat, digitGroupingGet)
+      ->Belt.Option.getWithDefault(true);
+    let inline = Belt.Option.getWithDefault(maybeInline, false);
+    ScilineEditor.Mml.create(~digitGrouping, ~inline, x);
   };
 
-  ScilineCalculator.Formatting.toString(~format, ~inline, x);
+  let parse = elements =>
+    switch (ScilineEditor.Value.parse(elements)) {
+    | `Ok(node) => (None, Some(node))
+    | `Error(i) => (Some(i), None)
+    };
 };
 
-let insertIndex = (ast, key, index) =>
-  switch (key) {
-  | Keys.One(element) =>
-    ScilineEditor.AST_Insert.insertIndex(ast, element, index)
-  | Many(elements) =>
-    ScilineEditor.AST_Insert.insertArrayIndex(ast, elements, index)
-  };
-let deleteIndex = ScilineEditor.AST_Delete.deleteIndex;
-let toMml = (x, maybeFormat) => {
-  let digitGrouping =
-    switch (maybeFormat) {
-    | Some(f) => digitGroupingGet(f)
-    | None => None
-    };
-  let digitGrouping =
-    switch (digitGrouping) {
-    | Some(digitGrouping) => digitGrouping
-    | None => true
-    };
-  ScilineEditor.Mml.create(~digitGrouping, x);
+module Keys = {
+  let keys = Keys.keys;
+
+  let customAtom = (~value, ~mml) =>
+    `CustomAtomS({
+      ScilineEditor.AST_Types.value: ScilineCalculator.Encoding.encode(value),
+      mml,
+    })
+    ->Keys.One;
 };
-let parse = elements =>
-  switch (ScilineEditor.Value.parse(elements)) {
-  | `Ok(node) => (None, Some(node))
-  | `Error(i) => (Some(i), None)
+
+module Value = {
+  let encode = ScilineCalculator.Encoding.encode;
+  let decode = ScilineCalculator.Encoding.decode;
+
+  let isNaN = x => x == `NaN;
+
+  let ofString = ScilineCalculator.Types.ofString;
+
+  let toMml = (x, maybeFormat, maybeInline) => {
+    open ScilineCalculator.Formatting;
+
+    let f = maybeFormat->Belt.Option.getWithDefault(format());
+
+    let inline = Belt.Option.getWithDefault(maybeInline, false);
+    let format = {
+      mode:
+        switch (modeGet(f)) {
+        | Some("string") => String /* Only used in data valueUtf */
+        | _ => MathML
+        },
+      style:
+        switch (styleGet(f)) {
+        | Some("decimal") => Decimal
+        | Some("scientific") => Scientific
+        | _ => Natural
+        },
+      base: baseGet(f)->Belt.Option.getWithDefault(default.base),
+      precision:
+        precisionGet(f)->Belt.Option.getWithDefault(default.precision),
+      digitGrouping:
+        digitGroupingGet(f)
+        ->Belt.Option.getWithDefault(default.digitGrouping),
+      decimalMinMagnitude:
+        decimalMinMagnitudeGet(f)
+        ->Belt.Option.getWithDefault(default.decimalMinMagnitude),
+      decimalMaxMagnitude:
+        decimalMaxMagnitudeGet(f)
+        ->Belt.Option.getWithDefault(default.decimalMaxMagnitude),
+    };
+
+    ScilineCalculator.Formatting.toString(~format, ~inline, x);
   };
+};
 
-let keys = Keys.keys;
+module Work = {
+  let calculate = (body, context): Work.t => {
+    let context =
+      Js.Nullable.bind(context, (. context) =>
+        Js.Dict.map(
+          (. value) => ScilineCalculator.Encoding.encode(value),
+          context,
+        )
+      );
+    `Calculate((body, context));
+  };
+  let convertUnits = (body, fromUnits, toUnits): Work.t =>
+    `ConvertUnits((body, fromUnits, toUnits));
+  let solveRoot = (body, initial): Work.t => `SolveRoot((body, initial));
+  let quadratic = (a, b, c): Work.t => `Quadratic((a, b, c));
+  let cubic = (a, b, c, d): Work.t => `Cubic((a, b, c, d));
+  let var2 = (x0, y0, c0, x1, y1, c1): Work.t =>
+    `Var2((x0, y0, c0, x1, y1, c1));
+  let var3 = (x0, y0, z0, c0, x1, y1, z1, c1, x2, y2, z2, c2): Work.t =>
+    `Var3((x0, y0, z0, c0, x1, y1, z1, c1, x2, y2, z2, c2));
+};
 
-let customAtom = (~value, ~mml) =>
-  `CustomAtomS({ScilineEditor.AST_Types.value: encodeValue(value), mml})
-  ->Keys.One;
+module Units = {
+  let unitsCompatible = ScilineCalculator.Unit_Dimensions.unitsCompatible;
 
-let unitsCompatible = ScilineCalculator.Unit_Dimensions.unitsCompatible;
+  let unitToMml = ScilineEditor.Mml_Units.unitToMml;
+  let unitPowerToMml = ScilineEditor.Mml_Units.unitPowerToMml;
+  let unitPowersToMml = ScilineEditor.Mml_Units.unitPowersToMml;
 
-let unitMml = ScilineEditor.Mml_Units.unitMml;
-let unitPowerMml = ScilineEditor.Mml_Units.unitPowerMml;
-let unitsMml = ScilineEditor.Mml_Units.unitsMml;
-
-let units = Units.units;
+  let units = Units.units;
+};

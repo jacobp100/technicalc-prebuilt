@@ -48,8 +48,8 @@ module.exports = [
     entry: "./src/Worker.bs.js"
   }),
   createConfig({
-    name: "math-typeset",
-    entry: "./src/math-typeset/index.js",
+    name: "typeset",
+    entry: "./src/typeset/index.js",
     target: "node"
   })
 ];
