@@ -2356,14 +2356,6 @@ schema-utils@^1.0.0:
     ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
 
-sciline-calculator@../sciline-calculator/:
-  version "0.1.0"
-  dependencies:
-    decimal.js "^10.2.0"
-
-sciline-editor@../sciline-editor:
-  version "0.1.0"
-
 semver@^5.3.0, semver@^5.5.0, semver@^5.6.0:
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
@@ -2653,6 +2645,14 @@ tar@^4:
     mkdirp "^0.5.0"
     safe-buffer "^5.1.2"
     yallist "^3.0.3"
+
+technicalc-calculator@../technicalc-calculator/:
+  version "0.1.0"
+  dependencies:
+    decimal.js "^10.2.0"
+
+technicalc-editor@../technicalc-editor:
+  version "0.1.0"
 
 terser-webpack-plugin@^1.4.1:
   version "1.4.2"

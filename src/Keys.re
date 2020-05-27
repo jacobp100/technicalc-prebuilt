@@ -44,8 +44,11 @@ keys->Js.Dict.set("floor", One(`Floor1S));
 keys->Js.Dict.set("ceil", One(`Ceil1S));
 keys->Js.Dict.set("round", One(`Round1S));
 keys->Js.Dict.set("log", One(`Function(Log)));
-keys->Js.Dict.set("log2", Many([|`NLog1, `DigitS("2")|]));
-keys->Js.Dict.set("log10", Many([|`NLog1, `DigitS("1"), `DigitS("0")|]));
+keys->Js.Dict.set("log2", Many([|`NLog1, `DigitS("2"), `Arg|]));
+keys->Js.Dict.set(
+  "log10",
+  Many([|`NLog1, `DigitS("1"), `DigitS("0"), `Arg|]),
+);
 keys->Js.Dict.set("logn", One(`NLog1));
 keys->Js.Dict.set("sin", One(`Function(Sin)));
 keys->Js.Dict.set("asin", One(`Function(Asin)));
