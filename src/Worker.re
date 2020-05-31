@@ -1,5 +1,5 @@
 type postMessageData = {
-  results: array(ScilineCalculator.Encoding.encoding),
+  results: array(TechniCalcCalculator.Encoding.encoding),
   didError: bool,
 };
 
@@ -11,7 +11,7 @@ type self = {
 };
 
 let make = self => {
-  open ScilineCalculator.AST;
+  open TechniCalcCalculator.AST;
 
   let getResults = work =>
     switch (work) {
@@ -25,7 +25,7 @@ let make = self => {
               Belt.Map.String.set(
                 accum,
                 key,
-                ScilineCalculator.Encoding.decode(value),
+                TechniCalcCalculator.Encoding.decode(value),
               )
             )
         | None => Belt.Map.String.empty
@@ -35,7 +35,7 @@ let make = self => {
     | `ConvertUnits(a, fromUnits, toUnits) =>
       let res =
         eval(~context=Belt.Map.String.empty, a)
-        ->ScilineCalculator.Units.convert(~fromUnits, ~toUnits);
+        ->TechniCalcCalculator.Units.convert(~fromUnits, ~toUnits);
       [|res|];
     | `SolveRoot(body, initial) =>
       let res = solveRoot(body, initial);
@@ -61,7 +61,7 @@ let make = self => {
         results:
           e.data
           ->getResults
-          ->Belt.Array.map(ScilineCalculator.Encoding.encode),
+          ->Belt.Array.map(TechniCalcCalculator.Encoding.encode),
         didError: false,
       }) {
       | _ => {results: [||], didError: true}
