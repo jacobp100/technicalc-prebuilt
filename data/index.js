@@ -2,7 +2,7 @@
 const { TeX } = require("mathjax-full/js/input/tex.js");
 const { SVG } = require("mathjax-full/js/output/svg.js");
 const {
-  HTMLDocument
+  HTMLDocument,
 } = require("mathjax-full/js/handlers/html/HTMLDocument.js");
 const { liteAdaptor } = require("mathjax-full/js/adaptors/liteAdaptor.js");
 
@@ -20,11 +20,11 @@ const Typeset = (string, display) => {
 
   const html = new HTMLDocument("", liteAdaptor(), {
     InputJax: tex,
-    OutputJax: svg
+    OutputJax: svg,
   });
 
   const visitor = new MmlVisitor();
-  const toMathML = node => visitor.visitTree(node, html);
+  const toMathML = (node) => visitor.visitTree(node, html);
 
   const math = new html.options.MathItem(string, tex, display);
   math.setMetrics(16, 16, 80, 100000, 1);
@@ -37,7 +37,7 @@ const Typeset = (string, display) => {
   return out;
 };
 
-const unnestDocument = d => d.replace(/<\/?math[^>]*>/g, "");
+const unnestDocument = (d) => d.replace(/<\/?math[^>]*>/g, "");
 
 const superscriptReplacements = {
   "-": "⁻",
@@ -50,7 +50,7 @@ const superscriptReplacements = {
   6: "⁶",
   7: "⁷",
   8: "⁸",
-  9: "⁹"
+  9: "⁹",
 };
 
 const subscriptReplacements = {
@@ -64,24 +64,19 @@ const subscriptReplacements = {
   7: "₇",
   8: "₈",
   9: "₉",
-  h: "h"
+  h: "h",
 };
 
 const data = require("./data");
 const nist = require("fs")
   .readFileSync(__dirname + "/data.csv", "utf8")
   .split("\n")
-  .filter(l => l)
-  .map(l =>
+  .filter((l) => l)
+  .map((l) =>
     l
       .match(/^("[^"]+"|[^,]+),([^,]+)\s*,([^,]+)$/)
       .slice(1)
-      .map(p =>
-        p
-          .replace(/^"/, "")
-          .replace(/"$/, "")
-          .trim()
-      )
+      .map((p) => p.replace(/^"/, "").replace(/"$/, "").trim())
   )
   .map(([title, value, units]) => {
     if (value == null) throw new Error("Oh");
@@ -95,7 +90,7 @@ const nist = require("fs")
     if (units) {
       const unitsMml = units
         .split(" ")
-        .map(str => {
+        .map((str) => {
           const [unitBase, power] = str.split("^");
           const [unit, base] = unitBase.split("_");
           const unitWithHtml = unit.replace("ohm", "&#x2126;");
@@ -120,10 +115,10 @@ const nist = require("fs")
       throw new Error(`Invalid MML for ${title}`);
     }
 
-    let valueUtf = Value.toMml(Value.ofString(value), {
-      mode: "string", // See note in Client
-      style: "decimal"
-    }).replace(/e(.+)/, "×10^$1");
+    let valueUtf = Value.toString(Value.ofString(value)).replace(
+      /e(.+)/,
+      "×10^$1"
+    );
 
     if (units) {
       valueUtf += ` ${units.replace("ohm", "Ω")}`;
@@ -134,7 +129,7 @@ const nist = require("fs")
       (_, subSuper, subSuperArg) => {
         const map =
           subSuper === "^" ? superscriptReplacements : subscriptReplacements;
-        return Array.from(subSuperArg, x => {
+        return Array.from(subSuperArg, (x) => {
           const val = map[x];
           if (val == null) throw new Error(`No mapping for ${x} (${valueUtf})`);
           return val;
@@ -155,7 +150,7 @@ const formats = [
   ["\\lbar", "\\unicode{x19b}"],
   ["\\lambdabar", "\\unicode{x19b}"],
   ["\\unicode{x212B}", "A"],
-  ["\\unicode{x19b}", "\\lambda"]
+  ["\\unicode{x19b}", "\\lambda"],
 ];
 
 let out = data.map(({ title, name: n, tex }, i) => {
@@ -177,7 +172,7 @@ let out = data.map(({ title, name: n, tex }, i) => {
     formattedTex
   );
 
-  const normalizeTitle = a =>
+  const normalizeTitle = (a) =>
     a
       .replace(/\s/g, "")
       .toLowerCase()
@@ -186,7 +181,7 @@ let out = data.map(({ title, name: n, tex }, i) => {
       .trim();
 
   const { value, valueUtf } = nist.find(
-    nist => normalizeTitle(title) === normalizeTitle(nist.title)
+    (nist) => normalizeTitle(title) === normalizeTitle(nist.title)
   );
   let symbolMml;
 
@@ -216,8 +211,8 @@ let out = data.map(({ title, name: n, tex }, i) => {
 });
 
 out = out
-  .filter(t => !/in [KMG]?eV/.test(t.title))
-  .filter(t => {
+  .filter((t) => !/in [KMG]?eV/.test(t.title))
+  .filter((t) => {
     const filter = titles.get(t.title);
     if (filter == null) {
       throw new Error(`Missing filter for ${t.title}`);
@@ -232,7 +227,9 @@ out.forEach(({ title, symbolMml }) => {
   test.set(symbolMml, existing);
 });
 
-const conflicts = Array.from(test.values()).filter(values => values.length > 0);
+const conflicts = Array.from(test.values()).filter(
+  (values) => values.length > 0
+);
 
 require("fs").writeFileSync(
   require("path").resolve(__dirname, "../dist/constants.json"),

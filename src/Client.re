@@ -60,6 +60,12 @@ module Value = {
 
   let ofString = ScilineCalculator.Types.ofString;
 
+  let toString = x => {
+    open ScilineCalculator.Formatting;
+    let format = {...default, mode: String, style: Decimal};
+    toString(~format, x);
+  };
+
   let toMml = (x, maybeFormat, maybeInline) => {
     open ScilineCalculator.Formatting;
 
@@ -67,11 +73,7 @@ module Value = {
 
     let inline = Belt.Option.getWithDefault(maybeInline, false);
     let format = {
-      mode:
-        switch (modeGet(f)) {
-        | Some("string") => String /* Only used in data valueUtf */
-        | _ => MathML
-        },
+      mode: MathML,
       style:
         switch (styleGet(f)) {
         | Some("decimal") => Decimal
