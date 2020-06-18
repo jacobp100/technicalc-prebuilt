@@ -1,4 +1,4 @@
-open ScilineEditor.AST_Types;
+open TechniCalcEditor.AST_Types;
 
 type key =
   | One(t)

@@ -19,7 +19,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "bs-platform": "7",
+    "bs-platform": "^8.0.0-dev.1",
     "esm": "^3.2.25",
     "mathjax-full": "^3.0.1",
     "node-fetch": "^2.6.0",

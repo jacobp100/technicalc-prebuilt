@@ -1,10 +1,12 @@
+[@warning "-30"];
+
 type section = {
   title: string,
   data: array(array(unitRow)),
 }
 and unitRow = {
   title: string,
-  unit: ScilineCalculator.Unit_Types.unitType,
+  unit: TechniCalcCalculator.Unit_Types.unitType,
   primary: bool,
 };
 

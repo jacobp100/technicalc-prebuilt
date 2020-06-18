@@ -20,22 +20,22 @@ module Editor = {
   let insertIndex = (ast, key, index) =>
     switch (key) {
     | Keys.One(element) =>
-      ScilineEditor.AST_Insert.insertIndex(ast, element, index)
+      TechniCalcEditor.AST_Insert.insertIndex(ast, element, index)
     | Many(elements) =>
-      ScilineEditor.AST_Insert.insertArrayIndex(ast, elements, index)
+      TechniCalcEditor.AST_Insert.insertArrayIndex(ast, elements, index)
     };
-  let deleteIndex = ScilineEditor.AST_Delete.deleteIndex;
+  let deleteIndex = TechniCalcEditor.AST_Delete.deleteIndex;
 
   let toMml = (x, maybeFormat, maybeInline) => {
     let digitGrouping =
       Belt.Option.flatMap(maybeFormat, digitGroupingGet)
       ->Belt.Option.getWithDefault(true);
     let inline = Belt.Option.getWithDefault(maybeInline, false);
-    ScilineEditor.Mml.create(~digitGrouping, ~inline, x);
+    TechniCalcEditor.Mml.create(~digitGrouping, ~inline, x);
   };
 
   let parse = elements =>
-    switch (ScilineEditor.Value.parse(elements)) {
+    switch (TechniCalcEditor.Value.parse(elements)) {
     | `Ok(node) => (None, Some(node))
     | `Error(i) => (Some(i), None)
     };
@@ -46,19 +46,19 @@ module Keys = {
 
   let customAtom = (~value, ~mml) =>
     `CustomAtomS({
-      ScilineEditor.AST_Types.value: ScilineCalculator.Encoding.encode(value),
+      TechniCalcEditor.AST_Types.value: TechniCalcCalculator.Encoding.encode(value),
       mml,
     })
     ->Keys.One;
 };
 
 module Value = {
-  let encode = ScilineCalculator.Encoding.encode;
-  let decode = ScilineCalculator.Encoding.decode;
+  let encode = TechniCalcCalculator.Encoding.encode;
+  let decode = TechniCalcCalculator.Encoding.decode;
 
   let isNaN = x => x == `NaN;
 
-  let ofString = ScilineCalculator.Types.ofString;
+  let ofString = TechniCalcCalculator.Types.ofString;
 
   let toString = x => {
     open ScilineCalculator.Formatting;
@@ -67,7 +67,7 @@ module Value = {
   };
 
   let toMml = (x, maybeFormat, maybeInline) => {
-    open ScilineCalculator.Formatting;
+    open TechniCalcCalculator.Formatting;
 
     let f = maybeFormat->Belt.Option.getWithDefault(format());
 
@@ -94,7 +94,7 @@ module Value = {
         ->Belt.Option.getWithDefault(default.decimalMaxMagnitude),
     };
 
-    ScilineCalculator.Formatting.toString(~format, ~inline, x);
+    TechniCalcCalculator.Formatting.toString(~format, ~inline, x);
   };
 };
 
@@ -103,7 +103,7 @@ module Work = {
     let context =
       Js.Nullable.bind(context, (. context) =>
         Js.Dict.map(
-          (. value) => ScilineCalculator.Encoding.encode(value),
+          (. value) => TechniCalcCalculator.Encoding.encode(value),
           context,
         )
       );
@@ -121,11 +121,11 @@ module Work = {
 };
 
 module Units = {
-  let unitsCompatible = ScilineCalculator.Unit_Dimensions.unitsCompatible;
+  let unitsCompatible = TechniCalcCalculator.Unit_Dimensions.unitsCompatible;
 
-  let unitToMml = ScilineEditor.Mml_Units.unitToMml;
-  let unitPowerToMml = ScilineEditor.Mml_Units.unitPowerToMml;
-  let unitPowersToMml = ScilineEditor.Mml_Units.unitPowersToMml;
+  let unitToMml = TechniCalcEditor.Mml_Units.unitToMml;
+  let unitPowerToMml = TechniCalcEditor.Mml_Units.unitPowerToMml;
+  let unitPowersToMml = TechniCalcEditor.Mml_Units.unitPowersToMml;
 
   let units = Units.units;
 };

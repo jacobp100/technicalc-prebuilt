@@ -414,10 +414,10 @@ browserify-zlib@^0.2.0:
   dependencies:
     pako "~1.0.5"
 
-bs-platform@7:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-7.0.1.tgz#1d7b0ef6088b998dceee5db74a7cd8f01c20a3bd"
-  integrity sha512-UjStdtHhbtC/l6vKJ1XRDqrPk7rFf5PLYHtRX3akDXEYVnTbN36z0g4DEr5mU8S0N945e33HYts9x+i7hKKpZQ==
+bs-platform@^8.0.0-dev.1:
+  version "8.0.0-dev.1"
+  resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-8.0.0-dev.1.tgz#8c4a6c1b3d62c8afa6b7675a3222162b1b88e409"
+  integrity sha512-AMwhxGf9VKSlzM9FeV++ex6kmrn48RHvKOd6lQbt2QD3He1xuxuYZ17VhJjzYDipGzeVLbT77Oku/EeFba0afg==
 
 buffer-from@^1.0.0:
   version "1.1.1"

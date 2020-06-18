@@ -1,14 +1,14 @@
-type node = ScilineCalculator.AST_Types.t;
+type node = TechniCalcCalculator.AST_Types.t;
 
 type t = [
   | `Calculate(
       node,
-      Js.nullable(Js.Dict.t(ScilineCalculator.Encoding.encoding)),
+      Js.nullable(Js.Dict.t(TechniCalcCalculator.Encoding.encoding)),
     )
   | `ConvertUnits(
       node,
-      ScilineCalculator.Unit_Types.units,
-      ScilineCalculator.Unit_Types.units,
+      TechniCalcCalculator.Unit_Types.units,
+      TechniCalcCalculator.Unit_Types.units,
     )
   | `SolveRoot(node, node)
   | `Quadratic(node, node, node)
