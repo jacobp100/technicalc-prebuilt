@@ -414,10 +414,10 @@ browserify-zlib@^0.2.0:
   dependencies:
     pako "~1.0.5"
 
-bs-platform@^8.0.0-dev.1:
-  version "8.0.0-dev.1"
-  resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-8.0.0-dev.1.tgz#8c4a6c1b3d62c8afa6b7675a3222162b1b88e409"
-  integrity sha512-AMwhxGf9VKSlzM9FeV++ex6kmrn48RHvKOd6lQbt2QD3He1xuxuYZ17VhJjzYDipGzeVLbT77Oku/EeFba0afg==
+bs-platform@^8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/bs-platform/-/bs-platform-8.0.1.tgz#05d78492774c2f7e9b424a30eabe4f424fa951ae"
+  integrity sha512-zVIlJl1mkQ2DqhPyZmgbpTDyFHXtryUA6nJa6Q1DsLof0t5EbdNfH4UGT219YhiS7+m0xyEVVHPJIPHNZlssHQ==
 
 buffer-from@^1.0.0:
   version "1.1.1"
@@ -1595,7 +1595,7 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-mathjax-full@^3.0.1:
+mathjax-full@3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/mathjax-full/-/mathjax-full-3.0.1.tgz#e9f7213fe75ab29dbbf52f141037a845a89b797e"
   integrity sha512-KE4z2FF9PzKIHnK0HsMkThqLaOi+2DqN2T+QqqP465+vmCzftZyqXr7e6fp60xPC4nXTeMM1rcbBQJ9yjqwPAw==
@@ -2481,9 +2481,9 @@ source-map@^0.6.0, source-map@^0.6.1, source-map@~0.6.1:
   integrity sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
 
 speech-rule-engine@^3.0.0-beta.8:
-  version "3.0.0-beta.8"
-  resolved "https://registry.yarnpkg.com/speech-rule-engine/-/speech-rule-engine-3.0.0-beta.8.tgz#f6b9ffc80f36bcdf95fff4bc3103ec20ba1373a2"
-  integrity sha512-gnNap93Xrz5ngIqa/BOaJGatC64B7dqDrXK/pr4yAaZAcW6tKVO5PwaTvw9QqVab86ad5scpA39Nxwhlb11tTg==
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/speech-rule-engine/-/speech-rule-engine-3.0.1.tgz#84d3a8e936488329b1f3485289efc90430ba054c"
+  integrity sha512-07B/V6eKZQfoKHdw8QaRu3ENKwbE8XcgCFNJAGeKnz751TixF6xUmxqLnsAN4zIj0qUCUKxCy4/LHybBMBmNfQ==
   dependencies:
     commander "*"
     wicked-good-xpath "*"

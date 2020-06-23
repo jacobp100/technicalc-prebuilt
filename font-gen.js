@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const {
-  boldItalic
+  boldItalic,
 } = require("mathjax-full/js/output/svg/fonts/tex/bold-italic");
 const { bold } = require("mathjax-full/js/output/svg/fonts/tex/bold");
 const { italic } = require("mathjax-full/js/output/svg/fonts/tex/italic");

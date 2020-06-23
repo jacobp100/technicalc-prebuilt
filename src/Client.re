@@ -46,7 +46,8 @@ module Keys = {
 
   let customAtom = (~value, ~mml) =>
     `CustomAtomS({
-      TechniCalcEditor.AST_Types.value: TechniCalcCalculator.Encoding.encode(value),
+      TechniCalcEditor.AST_Types.value:
+        TechniCalcCalculator.Encoding.encode(value),
       mml,
     })
     ->Keys.One;
@@ -61,7 +62,7 @@ module Value = {
   let ofString = TechniCalcCalculator.Types.ofString;
 
   let toString = x => {
-    open ScilineCalculator.Formatting;
+    open TechniCalcCalculator.Formatting;
     let format = {...default, mode: String, style: Decimal};
     toString(~format, x);
   };

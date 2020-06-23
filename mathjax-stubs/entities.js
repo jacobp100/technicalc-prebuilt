@@ -15,4 +15,4 @@ const escapeCharCode = (_fullMatch, x, charCode) => {
   return String.fromCharCode(hi, lo);
 };
 
-export const translate = text => text.replace(escapeRe, escapeCharCode);
+export const translate = (text) => text.replace(escapeRe, escapeCharCode);
