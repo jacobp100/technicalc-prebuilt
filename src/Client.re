@@ -36,8 +36,8 @@ module Editor = {
 
   let parse = elements =>
     switch (TechniCalcEditor.Value.parse(elements)) {
-    | `Ok(node) => (None, Some(node))
-    | `Error(i) => (Some(i), None)
+    | Ok(node) => (None, Some(node))
+    | Error(i) => (Some(i), None)
     };
 };
 
@@ -45,9 +45,8 @@ module Keys = {
   let keys = Keys.keys;
 
   let customAtom = (~value, ~mml) =>
-    `CustomAtomS({
-      TechniCalcEditor.AST_Types.value:
-        TechniCalcCalculator.Encoding.encode(value),
+    TechniCalcEditor.AST_Types.CustomAtomS({
+      value: TechniCalcCalculator.Encoding.encode(value),
       mml,
     })
     ->Keys.One;
