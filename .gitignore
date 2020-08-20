@@ -9,8 +9,10 @@ npm-debug.log
 
 *.bs.js
 playground.js
-dist
 coverage
 
 /fonts-prebuilt
 /mathjax-prebuilt
+
+/dist
+/web

@@ -17,6 +17,9 @@ type format = {
 };
 
 module Editor = {
+  let encode = elements => TechniCalcEditor.Encoding.encode(elements);
+  let decode = elements => TechniCalcEditor.Encoding.decode(elements);
+
   let insertIndex = (ast, key, index) =>
     switch (key) {
     | Keys.One(element) =>
@@ -58,7 +61,7 @@ module Value = {
 
   let isNaN = x => x == `NaN;
 
-  let ofString = TechniCalcCalculator.Types.ofString;
+  let ofString = TechniCalcCalculator.Formatting.ofString;
 
   let toString = x => {
     open TechniCalcCalculator.Formatting;
