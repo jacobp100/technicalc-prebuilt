@@ -1,43 +1,43 @@
 const resultContainer = document.getElementById("result");
 
+const inputContainer = resultContainer.querySelector(".result__input");
+const outputContainer = resultContainer.querySelector(".result__output");
+const form = resultContainer.querySelector(".result__form");
+
+const getStyle = () => {
+  const formData = new FormData(form);
+  const style = {
+    style: formData.get("style"),
+    precision: Number(formData.get("precision")),
+    digitGrouping: formData.get("digitGrouping") != null,
+  };
+  return style;
+};
+
+const setContainerMml = (element, mml) => {
+  element.classList.remove("result--loading");
+  element.innerHTML = mml;
+
+  if (window.MathJax != null) {
+    MathJax.typeset();
+  }
+};
+
 const loadResult = async (search) => {
   resultContainer.classList.remove("result--hidden");
-
-  const inputContainer = resultContainer.querySelector(".result__input");
-  const outputContainer = resultContainer.querySelector(".result__output");
-  const form = resultContainer.querySelector(".result__form");
 
   const worker = new Worker("/assets/technicalc-worker.js");
 
   const { qsParse, Client } = await import("./imports");
 
-  const setMml = (element, mml) => {
-    element.classList.remove("result--loading");
-    element.innerHTML = mml;
-
-    if (window.MathJax != null) {
-      MathJax.typeset();
-    }
-  };
-
-  const getStyle = () => {
-    const formData = new FormData(form);
-    const style = {
-      style: formData.get("style"),
-      precision: Number(formData.get("precision")),
-      digitGrouping: formData.get("digitGrouping") != null,
-    };
-    return style;
-  };
-
   const setInput = (editorValue) => {
     const inputMml = Client.Editor.toMml(editorValue, getStyle());
-    setMml(inputContainer, inputMml);
+    setContainerMml(inputContainer, inputMml);
   };
 
   const setOutput = (result) => {
     resultMml = Client.Value.toMml(result, getStyle());
-    setMml(outputContainer, resultMml);
+    setContainerMml(outputContainer, resultMml);
   };
 
   const {
