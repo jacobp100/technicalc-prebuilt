@@ -20,15 +20,23 @@ const loadResult = async (search) => {
     }
   };
 
-  const setOutput = (result) => {
+  const getStyle = () => {
     const formData = new FormData(form);
     const style = {
       style: formData.get("style"),
       precision: Number(formData.get("precision")),
       digitGrouping: formData.get("digitGrouping") != null,
     };
-    console.log(style);
-    resultMml = Client.Value.toMml(result, style);
+    return style;
+  };
+
+  const setInput = (editorValue) => {
+    const inputMml = Client.Editor.toMml(editorValue, getStyle());
+    setMml(inputContainer, inputMml);
+  };
+
+  const setOutput = (result) => {
+    resultMml = Client.Value.toMml(result, getStyle());
     setMml(outputContainer, resultMml);
   };
 
@@ -41,8 +49,7 @@ const loadResult = async (search) => {
   const encoded = { elements, unitConversions, customAtoms, variables };
   const editorValue = Client.Editor.decode(encoded);
 
-  const inputMml = Client.Editor.toMml(editorValue);
-  setMml(inputContainer, inputMml);
+  setInput(editorValue);
 
   const [parsingError, parsedValue] = Client.Editor.parse(editorValue);
   if (parsingError == null && parsedValue != null) {
@@ -63,6 +70,8 @@ const loadResult = async (search) => {
   };
 
   form.addEventListener("change", () => {
+    setInput(editorValue);
+
     if (result != null) {
       setOutput(result);
     }
