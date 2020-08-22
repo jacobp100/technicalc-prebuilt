@@ -11,8 +11,6 @@ npm-debug.log
 playground.js
 coverage
 
+/dist
 /fonts-prebuilt
 /mathjax-prebuilt
-
-/dist
-/web

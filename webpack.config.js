@@ -1,19 +1,14 @@
 const path = require("path");
 const webpack = require("webpack");
 
-const createConfig = ({
-  name,
-  entry,
-  outputDirectory,
-  outputLibraryTarget = "commonjs2",
-  target = "web",
-}) => ({
+const createConfig = ({ name, entry, outputDirectory, target = "web" }) => ({
   mode: "production",
   entry,
   output: {
-    filename: `${name}.js`,
+    filename: `${name.toLowerCase()}.js`,
     path: path.resolve(__dirname, outputDirectory),
-    libraryTarget: outputLibraryTarget,
+    library: name,
+    libraryTarget: "umd",
     publicPath: "/assets/",
   },
   target,
@@ -37,31 +32,19 @@ const createConfig = ({
 
 module.exports = [
   createConfig({
-    name: "client",
+    name: "Client",
     outputDirectory: "dist",
     entry: "./src/Client.bs.js",
   }),
   createConfig({
-    name: "worker",
+    name: "Worker",
     outputDirectory: "dist",
     entry: "./src/Worker.bs.js",
   }),
   createConfig({
-    name: "typeset",
+    name: "Typeset",
     outputDirectory: "dist",
     entry: "./src/typeset/index.js",
     target: "node",
-  }),
-  createConfig({
-    name: "technicalc",
-    outputDirectory: "web",
-    entry: "./src/WebClient/index.js",
-    outputLibraryTarget: "var",
-  }),
-  createConfig({
-    name: "technicalc-worker",
-    outputDirectory: "web",
-    entry: "./src/WorkerWeb.bs.js",
-    outputLibraryTarget: "var",
   }),
 ];
