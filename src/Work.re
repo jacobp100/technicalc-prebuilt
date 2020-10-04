@@ -3,7 +3,7 @@ type node = TechniCalcCalculator.AST_Types.t;
 type t = [
   | `Calculate(
       node,
-      Js.nullable(Js.Dict.t(TechniCalcCalculator.Encoding.encoding)),
+      Js.nullable(Js.Dict.t(TechniCalcCalculator.Value_Encoding.encoding)),
     )
   | `ConvertUnits(
       node,

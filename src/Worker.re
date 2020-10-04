@@ -1,5 +1,5 @@
 type postMessageData = {
-  results: array(TechniCalcCalculator.Encoding.encoding),
+  results: array(TechniCalcCalculator.Value_Encoding.encoding),
   didError: bool,
 };
 
@@ -25,7 +25,7 @@ let make = self => {
               Belt.Map.String.set(
                 accum,
                 key,
-                TechniCalcCalculator.Encoding.decode(value),
+                TechniCalcCalculator.Value_Encoding.decode(value),
               )
             )
         | None => Belt.Map.String.empty
@@ -61,7 +61,7 @@ let make = self => {
         results:
           e.data
           ->getResults
-          ->Belt.Array.map(TechniCalcCalculator.Encoding.encode),
+          ->Belt.Array.map(TechniCalcCalculator.Value_Encoding.encode),
         didError: false,
       }) {
       | _ => {results: [||], didError: true}

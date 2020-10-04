@@ -49,28 +49,28 @@ module Keys = {
 
   let customAtom = (~value, ~mml) =>
     TechniCalcEditor.AST_Types.CustomAtomS({
-      value: TechniCalcCalculator.Encoding.encode(value),
+      value: TechniCalcCalculator.Value_Encoding.encode(value),
       mml,
     })
     ->Keys.One;
 };
 
 module Value = {
-  let encode = TechniCalcCalculator.Encoding.encode;
-  let decode = TechniCalcCalculator.Encoding.decode;
+  let encode = TechniCalcCalculator.Value_Encoding.encode;
+  let decode = TechniCalcCalculator.Value_Encoding.decode;
 
   let isNaN = x => x == `NaN;
 
-  let ofString = TechniCalcCalculator.Formatting.ofString;
+  let ofString = TechniCalcCalculator.Value_Formatting.ofString;
 
   let toString = x => {
-    open TechniCalcCalculator.Formatting;
+    open TechniCalcCalculator.Value_Formatting;
     let format = {...default, mode: String, style: Decimal};
     toString(~format, x);
   };
 
   let toMml = (x, maybeFormat, maybeInline) => {
-    open TechniCalcCalculator.Formatting;
+    open! TechniCalcCalculator.Value_Formatting;
 
     let f = maybeFormat->Belt.Option.getWithDefault(format());
 
@@ -97,7 +97,7 @@ module Value = {
         ->Belt.Option.getWithDefault(default.decimalMaxMagnitude),
     };
 
-    TechniCalcCalculator.Formatting.toString(~format, ~inline, x);
+    toString(~format, ~inline, x);
   };
 };
 
@@ -106,7 +106,7 @@ module Work = {
     let context =
       Js.Nullable.bind(context, (. context) =>
         Js.Dict.map(
-          (. value) => TechniCalcCalculator.Encoding.encode(value),
+          (. value) => TechniCalcCalculator.Value_Encoding.encode(value),
           context,
         )
       );
