@@ -174,7 +174,9 @@ let out = data.map(({ title, tex }, i) => {
   );
 
   if (title === "magnetic flux quantum") {
-    formattedTex = "\\Phi";
+    // We would have to load a whole font just for this entry
+    // Just change the formatting
+    formattedTex = "\\Phi_0";
   }
 
   const normalizeTitle = (a) =>
