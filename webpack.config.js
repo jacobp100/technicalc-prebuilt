@@ -35,16 +35,16 @@ const createConfig = ({ name, entry, outputDirectory, target = "web" }) => ({
 });
 
 module.exports = [
-  // createConfig({
-  //   name: "Client",
-  //   outputDirectory: "dist",
-  //   entry: "./src/Client.bs.js",
-  // }),
-  // createConfig({
-  //   name: "Worker",
-  //   outputDirectory: "dist",
-  //   entry: "./src/Worker.bs.js",
-  // }),
+  createConfig({
+    name: "Client",
+    outputDirectory: "dist",
+    entry: "./src/Client.bs.js",
+  }),
+  createConfig({
+    name: "Worker",
+    outputDirectory: "dist",
+    entry: "./src/Worker.bs.js",
+  }),
   createConfig({
     name: "Typeset",
     outputDirectory: "dist",
