@@ -20,16 +20,8 @@ const html = new HTMLDocument("", adaptor, {
 const em = 16;
 const ex = 8;
 const containerWidth = 80 * 16;
-export default (mml, display) => {
-  // const node = html.convert(mml, {
-  //   display,
-  //   em,
-  //   ex,
-  //   containerWidth,
-  // });
-  // console.log(adaptor.outerHTML(node));
-  // return;
 
+export default (mml, display) => {
   const math = new html.options.MathItem(mml, inputMml, display);
   math.setMetrics(em, ex, containerWidth, 100000, 1);
   math.compile(html);

@@ -13,35 +13,37 @@ const { texSize4 } = require("mathjax-full/js/output/svg/fonts/tex/tex-size4");
 const { skewX } = require("./font-util");
 const buildFont = require("./build-font");
 
+// Add missing non-italic characters
 for (let i = 0x3b1; i <= 0x3c9; i += 1) {
   normal[i] = skewX(italic[i], -15);
   bold[i] = skewX(boldItalic[i], -15);
 }
 
+const createDir = (dir) => {
+  try {
+    fs.mkdirSync(dir);
+  } catch (e) {}
+};
+
 const fontsJsonPath = path.resolve(__dirname, "../fonts-json");
-try {
-  fs.mkdirSync(fontsJsonPath);
-} catch (e) {}
-
 const fontsAssetsPath = path.resolve(__dirname, "../fonts-assets");
-try {
-  fs.mkdirSync(fontsAssetsPath);
-} catch (e) {}
 
-const jsonFont = (font, { preserveSvgChars }) => {
-  // for (key in font) {
-  //   const keepChar = Array.isArray(preserveSvgChars)
-  //     ? preserveSvgChars.includes(+key)
-  //     : preserveSvgChars != null
-  //     ? preserveSvgChars
-  //     : false;
+createDir(fontsJsonPath);
+createDir(fontsAssetsPath);
 
-  //   const data = font[key][3];
-  //   if (!keepChar && data != null) {
-  //     delete data.p;
-  //     delete data.sk;
-  //   }
-  // }
+const buildJsonFont = (font, { preserveSvgChars }) => {
+  for (key in font) {
+    const keepChar = Array.isArray(preserveSvgChars)
+      ? preserveSvgChars.includes(+key)
+      : preserveSvgChars != null
+      ? preserveSvgChars
+      : false;
+
+    const data = font[key][3];
+    if (!keepChar && data != null && data.p != null) {
+      data.p = 0;
+    }
+  }
 
   return JSON.stringify(font);
 };
@@ -56,16 +58,15 @@ const writeFont = (font, name, options = {}) => {
 
   fs.writeFileSync(
     path.join(fontsJsonPath, `${name}.json`),
-    jsonFont(font, options)
+    buildJsonFont(font, options)
   );
 };
 
-writeFont(boldItalic, "bold-italic", { preserveSvgChars: true });
-writeFont(bold, "bold", { preserveSvgChars: true });
-writeFont(italic, "italic", { preserveSvgChars: true });
-writeFont(normal, "normal", { preserveSvgChars: true /*[0x25a1]*/ });
-
-writeFont(largeop, "largeop", { preserveSvgChars: true });
-writeFont(smallop, "smallop", { preserveSvgChars: true });
-writeFont(texSize3, "size3", { preserveSvgChars: true });
-writeFont(texSize4, "size4", { preserveSvgChars: true });
+writeFont(boldItalic, "bold-italic");
+writeFont(bold, "bold");
+writeFont(italic, "italic");
+writeFont(normal, "normal", { preserveSvgChars: [0x25a1] });
+writeFont(largeop, "largeop");
+writeFont(smallop, "smallop");
+writeFont(texSize3, "size3");
+writeFont(texSize4, "size4");

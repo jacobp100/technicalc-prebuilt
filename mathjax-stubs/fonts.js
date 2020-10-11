@@ -19,6 +19,6 @@ export const texCalligraphic = {};
 export const texMathit = {};
 export const texOldstyleBold = {};
 export const texOldstyle = {};
-export { default as texSize3 } from "../fonts-json/tex-size3.json";
-export { default as texSize4 } from "../fonts-json/tex-size4.json";
+export { default as texSize3 } from "../fonts-json/size3.json";
+export { default as texSize4 } from "../fonts-json/size4.json";
 export const texVariant = {};

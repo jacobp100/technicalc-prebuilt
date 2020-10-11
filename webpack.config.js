@@ -27,10 +27,10 @@ const createConfig = ({ name, entry, outputDirectory, target = "web" }) => ({
       /util[\\\/]Entities.js$/,
       require.resolve("./mathjax-stubs/entities")
     ),
-    // new webpack.NormalModuleReplacementPlugin(
-    //   /[\\\/]output[\\\/]svg[\\\/]Wrapper.js$/,
-    //   require.resolve("./mathjax-stubs/Wrapper")
-    // ),
+    new webpack.NormalModuleReplacementPlugin(
+      /[\\\/]output[\\\/]svg[\\\/]Wrapper.js$/,
+      require.resolve("./mathjax-stubs/Wrapper")
+    ),
   ],
 });
 

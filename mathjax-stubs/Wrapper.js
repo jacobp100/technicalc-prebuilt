@@ -282,7 +282,15 @@ var SVGWrapper = (function (_super) {
       d = _b[1],
       w = _b[2],
       data = _b[3];
-    if ("p" in data) {
+    /* CUSTOM CODE BEGIN */
+    if (data.p === 0) {
+      var char = String.fromCodePoint(n);
+      var attributes = { "data-variant": variant, transform: "scale(1 -1)" };
+      var textNode = this.svg("text", attributes, [this.jax.text(char)]);
+      var text = this.adaptor.append(parent, textNode);
+      this.place(x, y, text);
+    } else if ("p" in data) {
+    /* CUSTOM CODE END */
       var path = data.p ? "M" + data.p + "Z" : "";
       this.place(
         x,
@@ -319,14 +327,6 @@ var SVGWrapper = (function (_super) {
       );
       this.place(x, y, text);
       return this.jax.measureTextNodeWithCache(text, char, variant).w;
-    } else {
-      /* CUSTOM CODE BEGIN */
-      var char = String.fromCodePoint(n);
-      var attributes = { "data-variant": variant, transform: "scale(1 -1)" };
-      var textNode = this.svg("text", attributes, [this.jax.text(char)]);
-      var text = this.adaptor.append(parent, textNode);
-      this.place(x, y, text);
-      /* CUSTOM CODE END */
     }
     return w;
   };

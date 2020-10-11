@@ -59,7 +59,7 @@ export default (node, children, index) => {
           fillOpacity:
             attributes.class != null
               ? fillOpacities[attributes.class.trim()]
-              : 1,
+              : undefined,
         },
         children
       );

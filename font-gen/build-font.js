@@ -89,7 +89,7 @@ module.exports = ({ familyName, styleName }, chars) => {
       const path = pathDataToPath(pathData);
 
       const glyph = new Glyph({
-        name: unicodeString,
+        name: String.fromCharCode(unicode),
         unicode,
         advanceWidth,
         path,
