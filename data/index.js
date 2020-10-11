@@ -154,7 +154,7 @@ const formats = [
   ["\\unicode{x19b}", "\\lambda"],
 ];
 
-let out = data.map(({ title, name: n, tex }, i) => {
+let out = data.map(({ title, tex }, i) => {
   let formattedTex = tex;
   formattedTex = formattedTex.replace(
     /(?:\$([^$]*)\$|([^$,]+))/g,
@@ -172,6 +172,10 @@ let out = data.map(({ title, name: n, tex }, i) => {
     (out, [a, b]) => out.replace(a, b),
     formattedTex
   );
+
+  if (title === "magnetic flux quantum") {
+    formattedTex = "\\Phi";
+  }
 
   const normalizeTitle = (a) =>
     a

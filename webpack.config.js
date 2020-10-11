@@ -27,20 +27,24 @@ const createConfig = ({ name, entry, outputDirectory, target = "web" }) => ({
       /util[\\\/]Entities.js$/,
       require.resolve("./mathjax-stubs/entities")
     ),
+    // new webpack.NormalModuleReplacementPlugin(
+    //   /[\\\/]output[\\\/]svg[\\\/]Wrapper.js$/,
+    //   require.resolve("./mathjax-stubs/Wrapper")
+    // ),
   ],
 });
 
 module.exports = [
-  createConfig({
-    name: "Client",
-    outputDirectory: "dist",
-    entry: "./src/Client.bs.js",
-  }),
-  createConfig({
-    name: "Worker",
-    outputDirectory: "dist",
-    entry: "./src/Worker.bs.js",
-  }),
+  // createConfig({
+  //   name: "Client",
+  //   outputDirectory: "dist",
+  //   entry: "./src/Client.bs.js",
+  // }),
+  // createConfig({
+  //   name: "Worker",
+  //   outputDirectory: "dist",
+  //   entry: "./src/Worker.bs.js",
+  // }),
   createConfig({
     name: "Typeset",
     outputDirectory: "dist",

@@ -3,15 +3,16 @@ import Svg from "react-native-svg/lib/module/elements/Svg";
 import G from "react-native-svg/lib/module/elements/G";
 import Rect from "react-native-svg/lib/module/elements/Rect";
 import Path from "react-native-svg/lib/module/elements/Path";
+import Text from "react-native-svg/lib/module/elements/Text";
 
 const fillOpacities = {
   placeholder: 0.25,
-  invalid: 0.5
+  invalid: 0.5,
 };
 
 const FillContext = React.createContext("black");
 
-const TopLevelSvg = props =>
+const TopLevelSvg = (props) =>
   React.createElement(
     FillContext.Provider,
     { value: props.fill },
@@ -29,7 +30,8 @@ const InheritFillSvg = ({ x, y, ...props }) => {
   );
 };
 
-export default ({ kind, attributes }, children, index) => {
+export default (node, children, index) => {
+  const { kind, attributes } = node;
   switch (kind) {
     case "svg":
       return attributes.xmlns != null
@@ -44,7 +46,7 @@ export default ({ kind, attributes }, children, index) => {
               x: attributes.x,
               y: attributes.y,
               width: attributes.width,
-              height: attributes.height
+              height: attributes.height,
             },
             children
           );
@@ -57,7 +59,7 @@ export default ({ kind, attributes }, children, index) => {
           fillOpacity:
             attributes.class != null
               ? fillOpacities[attributes.class.trim()]
-              : undefined
+              : 1,
         },
         children
       );
@@ -65,7 +67,7 @@ export default ({ kind, attributes }, children, index) => {
       return React.createElement(Path, {
         key: index,
         d: attributes.d,
-        transform: attributes.transform // for brackets
+        transform: attributes.transform, // for brackets
       });
     case "rect":
       return React.createElement(Rect, {
@@ -73,8 +75,25 @@ export default ({ kind, attributes }, children, index) => {
         x: attributes.x,
         y: attributes.y,
         width: attributes.width,
-        height: attributes.height
+        height: attributes.height,
       });
+    case "text": {
+      const variant = attributes["data-variant"];
+      const fontFamily =
+        variant[0] === "-" ? `mathjax${variant}` : `mathjax-${variant}`;
+      return React.createElement(
+        Text,
+        {
+          key: index,
+          transform: attributes.transform,
+          fontFamily,
+          fontSize: 1000,
+        },
+        children
+      );
+    }
+    case "#text":
+      return node.value;
     default:
       throw new Error(`Unknown element ${kind}`);
   }

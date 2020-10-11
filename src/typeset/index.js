@@ -7,7 +7,7 @@ import {
   parseViewbox,
   parseTransform,
   parseId,
-  combineTransforms
+  combineTransforms,
 } from "./util";
 
 const inputMml = new MathML();
@@ -15,15 +15,23 @@ const outputSvg = new SVG({ fontCache: "none" });
 const adaptor = liteAdaptor();
 const html = new HTMLDocument("", adaptor, {
   InputJax: inputMml,
-  OutputJax: outputSvg
+  OutputJax: outputSvg,
 });
 const em = 16;
 const ex = 8;
-const cwidth = 80 * 16;
-
+const containerWidth = 80 * 16;
 export default (mml, display) => {
+  // const node = html.convert(mml, {
+  //   display,
+  //   em,
+  //   ex,
+  //   containerWidth,
+  // });
+  // console.log(adaptor.outerHTML(node));
+  // return;
+
   const math = new html.options.MathItem(mml, inputMml, display);
-  math.setMetrics(em, ex, cwidth, 100000, 1);
+  math.setMetrics(em, ex, containerWidth, 100000, 1);
   math.compile(html);
   math.typeset(html);
 
@@ -39,7 +47,7 @@ export default (mml, display) => {
   const rootNode = math.typesetRoot.children[0];
 
   const widths = new Map();
-  const setWidths = wrappedNode => {
+  const setWidths = (wrappedNode) => {
     if (!wrappedNode.element) return;
     const { id } = wrappedNode.element.attributes;
     const [_, after] = parseId(id);
@@ -79,7 +87,7 @@ export default (mml, display) => {
     }
 
     if (children != null) {
-      children.forEach(child => setPositions(child, transform));
+      children.forEach((child) => setPositions(child, transform));
     }
   };
   setPositions(rootNode, { s: 1, tX: 0, tY: 0 });

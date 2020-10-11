@@ -12,5 +12,6 @@ playground.js
 coverage
 
 /dist
-/fonts-prebuilt
-/mathjax-prebuilt
+/fonts-assets
+/fonts-json
+/test.js
