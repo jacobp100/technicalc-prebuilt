@@ -65,7 +65,12 @@ const writeFont = (font, name, options = {}) => {
 writeFont(boldItalic, "bold-italic");
 writeFont(bold, "bold");
 writeFont(italic, "italic");
-writeFont(normal, "normal", { preserveSvgChars: [0x25a1] });
+writeFont(normal, "normal", {
+  preserveSvgChars: [
+    // abs and d/dx with large content
+    0x2223,
+  ],
+});
 writeFont(largeop, "largeop");
 writeFont(smallop, "smallop");
 writeFont(texSize3, "size3");

@@ -290,7 +290,7 @@ var SVGWrapper = (function (_super) {
       var text = this.adaptor.append(parent, textNode);
       this.place(x, y, text);
     } else if ("p" in data) {
-    /* CUSTOM CODE END */
+      /* CUSTOM CODE END */
       var path = data.p ? "M" + data.p + "Z" : "";
       this.place(
         x,
