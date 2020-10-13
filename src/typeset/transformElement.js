@@ -5,7 +5,7 @@ import Rect from "react-native-svg/lib/module/elements/Rect";
 import Path from "react-native-svg/lib/module/elements/Path";
 import Text from "react-native-svg/lib/module/elements/Text";
 
-const fillOpacities = {
+const opacities = {
   placeholder: 0.25,
   invalid: 0.5,
 };
@@ -56,10 +56,8 @@ export default (node, children, index) => {
         {
           key: index,
           transform: attributes.transform,
-          fillOpacity:
-            attributes.class != null
-              ? fillOpacities[attributes.class.trim()]
-              : undefined,
+          opacity:
+            attributes.class != null ? opacities[attributes.class.trim()] : 1,
         },
         children
       );
