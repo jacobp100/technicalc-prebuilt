@@ -1,6 +1,6 @@
 # TechniCalc Prebuilt
 
-Bulids [technicalc-calculator](https://github.com/jacobp100/technicalc-calculator), [technicalc-editor](https://github.com/jacobp100/technicalc-editor) for the [TechniCalc app](https://jacobdoes.code.com/technicalc), and for sharing equations on the TechniCalc page on [jacob does code](https://jacobdoes.code.com/technicalc).
+Bulids [technicalc-calculator](https://github.com/jacobp100/technicalc-calculator), [technicalc-editor](https://github.com/jacobp100/technicalc-editor) for the [TechniCalc app](https://jacobdoes.code.com/technicalc), and for sharing equations on the TechniCalc page on [jacob does code](https://jacobdoescode.com/technicalc).
 
 Also builds MathJax for use in React Native, using more hacks than you could shake a stick at.
 
