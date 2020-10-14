@@ -17,8 +17,10 @@ type format = {
 };
 
 module Editor = {
-  let encode = elements => TechniCalcEditor.Encoding.encode(elements);
-  let decode = elements => TechniCalcEditor.Encoding.decode(elements);
+  let encode = TechniCalcEditor.Encoding.encode;
+  let decode = TechniCalcEditor.Encoding.decode;
+
+  let ofValue = TechniCalcEditor.AST.ofReal;
 
   let insertIndex = (ast, key, index) =>
     switch (key) {
