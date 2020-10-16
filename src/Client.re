@@ -16,63 +16,86 @@ type format = {
   decimalMaxMagnitude: int,
 };
 
-module Editor = {
-  let encode = TechniCalcEditor.Encoding.encode;
-  let decode = TechniCalcEditor.Encoding.decode;
+module Elements = {
+  open TechniCalcEditor;
 
-  let ofValue = TechniCalcEditor.AST.ofReal;
+  let encode = Encoding.encode;
+  let decode = Encoding.decode;
 
-  let insertIndex = (ast, key, index) =>
-    switch (key) {
-    | Keys.One(element) =>
-      TechniCalcEditor.AST_Insert.insertIndex(ast, element, index)
-    | Many(elements) =>
-      TechniCalcEditor.AST_Insert.insertArrayIndex(ast, elements, index)
-    };
-  let deleteIndex = TechniCalcEditor.AST_Delete.deleteIndex;
+  let ofValue = AST.ofReal;
 
   let toMml = (x, maybeFormat, maybeInline) => {
     let digitGrouping =
       Belt.Option.flatMap(maybeFormat, digitGroupingGet)
       ->Belt.Option.getWithDefault(true);
     let inline = Belt.Option.getWithDefault(maybeInline, false);
-    TechniCalcEditor.Mml.create(~digitGrouping, ~inline, x);
+    Mml.create(~digitGrouping, ~inline, x);
   };
 
   let parse = elements =>
-    switch (TechniCalcEditor.Value.parse(elements)) {
+    switch (Value.parse(elements)) {
     | Ok(node) => (None, Some(node))
     | Error(i) => (Some(i), None)
     };
 };
 
+module Editor = {
+  open TechniCalcEditor;
+
+  let empty = EditState.empty;
+  let make = EditState.make;
+
+  let clear = EditState.clear;
+
+  let setIndex = EditState.setIndex;
+  let previous = EditState.previous;
+  let next = EditState.next;
+  let moveStart = EditState.moveStart;
+  let moveEnd = EditState.moveEnd;
+
+  let insert = (ast, key) =>
+    switch (key) {
+    | Keys.One(element) => EditState.insert(ast, element)
+    | Many(elements) => EditState.insertArray(ast, elements)
+    };
+  let delete = EditState.delete;
+};
+
 module Keys = {
+  open TechniCalcEditor;
+
   let keys = Keys.keys;
 
   let customAtom = (~value, ~mml) =>
-    TechniCalcEditor.AST_Types.CustomAtomS({
+    AST.CustomAtomS({
       value: TechniCalcCalculator.Value_Encoding.encode(value),
       mml,
     })
     ->Keys.One;
+
+  let label = (~mml) => AST.LabelS({mml: mml})->Keys.One;
+
+  let equation = (~elements) => Keys.Many(elements);
 };
 
 module Value = {
-  let encode = TechniCalcCalculator.Value_Encoding.encode;
-  let decode = TechniCalcCalculator.Value_Encoding.decode;
+  open TechniCalcCalculator;
+
+  let encode = Value_Encoding.encode;
+  let decode = Value_Encoding.decode;
 
   let isNaN = x => x == `NaN;
 
-  let ofString = TechniCalcCalculator.Value_Formatting.ofString;
+  let ofString = Value_Formatting.ofString;
 
   let toString = x => {
-    open TechniCalcCalculator.Value_Formatting;
+    open Value_Formatting;
     let format = {...default, mode: String, style: Decimal};
     toString(~format, x);
   };
 
   let toMml = (x, maybeFormat, maybeInline) => {
-    open! TechniCalcCalculator.Value_Formatting;
+    open! Value_Formatting;
 
     let f = maybeFormat->Belt.Option.getWithDefault(format());
 
