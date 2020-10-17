@@ -11,7 +11,7 @@ const { AllPackages } = require("mathjax-full/js/input/tex/AllPackages.js");
 const MmlVisitor = require("mathjax-full/js/core/MmlTree/SerializedMmlVisitor.js")
   .SerializedMmlVisitor;
 
-global.window = undefined;
+global.self = undefined;
 const { Value } = require("../dist/client");
 const titles = require("./titles");
 

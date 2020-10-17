@@ -22,7 +22,7 @@ module Elements = {
   let encode = Encoding.encode;
   let decode = Encoding.decode;
 
-  let ofValue = AST.ofReal;
+  let ofValue = AST.ofValue;
 
   let toMml = (x, maybeFormat, maybeInline) => {
     let digitGrouping =
