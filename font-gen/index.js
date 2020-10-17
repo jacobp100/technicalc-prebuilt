@@ -73,5 +73,5 @@ writeFont(normal, "normal", {
 });
 writeFont(largeop, "largeop");
 writeFont(smallop, "smallop");
-writeFont(texSize3, "size3");
-writeFont(texSize4, "size4");
+writeFont(texSize3, "size3", { preserveSvgChars: true });
+writeFont(texSize4, "size4", { preserveSvgChars: true });

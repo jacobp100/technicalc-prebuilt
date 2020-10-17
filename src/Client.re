@@ -84,7 +84,7 @@ module Value = {
   let encode = Value_Encoding.encode;
   let decode = Value_Encoding.decode;
 
-  let isNaN = x => x == `NaN;
+  let isNaN = Value_Base.isNaN;
 
   let ofString = Value_Formatting.ofString;
 
