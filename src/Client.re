@@ -16,6 +16,8 @@ type format = {
   decimalMaxMagnitude: int,
 };
 
+let charToIndex = TechniCalcEditor.Encoding_VarInt.charToIndex;
+
 module Elements = {
   open TechniCalcEditor;
 
@@ -68,8 +70,8 @@ module Keys = {
 
   let customAtom = (~value, ~mml) =>
     AST.CustomAtomS({
-      value: TechniCalcCalculator.Value_Encoding.encode(value),
       mml,
+      value: TechniCalcCalculator.Value_Formatting.toString(value),
     })
     ->Keys.One;
 
@@ -81,18 +83,24 @@ module Keys = {
 module Value = {
   open TechniCalcCalculator;
 
-  let encode = Value_Encoding.encode;
-  let decode = Value_Encoding.decode;
+  let deprecatedDecode = Value_Encoding.decode;
 
   let isNaN = Value_Base.isNaN;
 
-  let ofString = Value_Formatting.ofString;
+  let ofString = x =>
+    switch (Value_Formatting.ofString(x)) {
+    | Some(value) => value
+    | None => Value_Base.nan
+    };
 
-  let toString = x => {
-    open Value_Formatting;
-    let format = {...default, mode: String, style: Decimal};
-    toString(~format, x);
-  };
+  // Only used in data/index.js
+  let toUtf = x =>
+    Value_Formatting.toString(
+      ~format={...Value_Formatting.default, style: Decimal},
+      x,
+    );
+
+  let toString = x => Value_Formatting.toString(x);
 
   let toMml = (x, maybeFormat, maybeInline) => {
     open! Value_Formatting;
@@ -135,17 +143,17 @@ module Work = {
           context,
         )
       );
-    `Calculate((body, context));
+    Calculate(body, context);
   };
   let convertUnits = (body, fromUnits, toUnits): Work.t =>
-    `ConvertUnits((body, fromUnits, toUnits));
-  let solveRoot = (body, initial): Work.t => `SolveRoot((body, initial));
-  let quadratic = (a, b, c): Work.t => `Quadratic((a, b, c));
-  let cubic = (a, b, c, d): Work.t => `Cubic((a, b, c, d));
+    ConvertUnits(body, fromUnits, toUnits);
+  let solveRoot = (body, initial): Work.t => SolveRoot(body, initial);
+  let quadratic = (a, b, c): Work.t => Quadratic(a, b, c);
+  let cubic = (a, b, c, d): Work.t => Cubic(a, b, c, d);
   let var2 = (x0, y0, c0, x1, y1, c1): Work.t =>
-    `Var2((x0, y0, c0, x1, y1, c1));
+    Var2(x0, y0, c0, x1, y1, c1);
   let var3 = (x0, y0, z0, c0, x1, y1, z1, c1, x2, y2, z2, c2): Work.t =>
-    `Var3((x0, y0, z0, c0, x1, y1, z1, c1, x2, y2, z2, c2));
+    Var3(x0, y0, z0, c0, x1, y1, z1, c1, x2, y2, z2, c2);
 };
 
 module Units = {

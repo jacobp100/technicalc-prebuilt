@@ -116,8 +116,8 @@ const nist = require("fs")
       throw new Error(`Invalid MML for ${title}`);
     }
 
-    let valueUtf = Value.toString(Value.ofString(value)).replace(
-      /e(.+)/,
+    let valueUtf = Value.toUtf(Value.ofString(value)).replace(
+      /e\+?(.+)/,
       "×10^$1"
     );
 
@@ -139,7 +139,7 @@ const nist = require("fs")
     );
 
     if (valueUtf.includes("^") || valueUtf.includes("_")) {
-      throw new Error(`Invalud valueUtf (${valueUtf})`);
+      throw new Error(`Invalid valueUtf (${valueUtf})`);
     }
 
     return { title, value, valueMml, valueUtf };

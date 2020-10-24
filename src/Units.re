@@ -49,6 +49,7 @@ let units = [|
       [|{title: "Foot", unit: Foot, primary: true}|],
       [|{title: "Yard", unit: Yard, primary: true}|],
       [|{title: "Mile", unit: Mile, primary: true}|],
+      [|{title: "Nautical Mile", unit: NauticalMile, primary: true}|],
       [|{title: "Light Year", unit: LightYear, primary: true}|],
       [|{title: "Parsec", unit: Parsec, primary: true}|],
       [|{title: "Angstrom", unit: Angstrom, primary: true}|],
@@ -101,6 +102,31 @@ let units = [|
         {title: "Tablespoon", unit: Tablespoon, primary: true},
       |],
       [|{title: "Fluid Ounce", unit: FluidOunce, primary: true}|],
+    |],
+  },
+  {
+    title: "Speed",
+    data: [|[|{title: "Knot", unit: Knot, primary: true}|]|],
+  },
+  {
+    title: "Force",
+    data: [|
+      [|{title: "Newton", unit: Newton, primary: true}|],
+      [|{title: "Pound Force", unit: PoundForce, primary: true}|],
+    |],
+  },
+  {
+    title: "Pressure",
+    data: [|
+      [|
+        {title: "Pascal", unit: Pascal, primary: true},
+        {title: "HectoPascal", unit: HectoPascal, primary: false},
+      |],
+      [|{title: "Atmosphere", unit: Atmosphere, primary: true}|],
+      [|
+        {title: "Bar", unit: Bar, primary: true},
+        {title: "Millibar", unit: Millibar, primary: false},
+      |],
     |],
   },
   {
