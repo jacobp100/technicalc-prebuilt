@@ -17,8 +17,8 @@ type format = {
 };
 
 module Migration = {
-  let characters = TechniCalcEditor.Encoding_VarInt.characters;
-  let charToIndex = TechniCalcEditor.Encoding_VarInt.charToIndex;
+  let decodeValue = Migration.Value_Encoding.decode;
+  let decodeElements = Migration.Encoding.decode;
 };
 
 module Elements = {
@@ -86,7 +86,8 @@ module Keys = {
 module Value = {
   open TechniCalcCalculator;
 
-  let deprecatedDecode = Value_Encoding.decode;
+  let encode = Value_Encoding.encode;
+  let decode = Value_Encoding.decode;
 
   let isNaN = Value_Base.isNaN;
 

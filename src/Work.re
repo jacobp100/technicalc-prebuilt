@@ -1,10 +1,7 @@
 type node = TechniCalcCalculator.AST_Types.t;
 
 type t =
-  | Calculate(
-      node,
-      Js.nullable(Js.Dict.t(TechniCalcCalculator.Value_Encoding.encoding)),
-    )
+  | Calculate(node, Js.nullable(Js.Dict.t(string)))
   | ConvertUnits(
       node,
       array(TechniCalcCalculator.Unit_Types.unitPower),

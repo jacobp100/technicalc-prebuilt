@@ -1,5 +1,5 @@
 type postMessageData = {
-  results: array(TechniCalcCalculator.Value_Encoding.encoding),
+  results: array(string),
   didError: bool,
 };
 
@@ -21,13 +21,13 @@ let make = self => {
         | Some(context) =>
           context
           ->Js.Dict.entries
-          ->Belt.Array.reduce(Belt.Map.String.empty, (accum, (key, value)) =>
-              Belt.Map.String.set(
-                accum,
-                key,
-                TechniCalcCalculator.Value_Encoding.decode(value),
+          ->Belt.Array.reduce(Belt.Map.String.empty, (accum, (key, value)) => {
+              TechniCalcCalculator.(
+                Value_Encoding.decode(value)
+                ->Belt.Option.getWithDefault(Value_Base.nan)
+                ->Belt.Map.String.set(accum, key, _)
               )
-            )
+            })
         | None => Belt.Map.String.empty
         };
       let res = eval(~context, a);
