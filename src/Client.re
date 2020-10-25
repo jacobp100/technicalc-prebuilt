@@ -16,7 +16,10 @@ type format = {
   decimalMaxMagnitude: int,
 };
 
-let charToIndex = TechniCalcEditor.Encoding_VarInt.charToIndex;
+module Migration = {
+  let characters = TechniCalcEditor.Encoding_VarInt.characters;
+  let charToIndex = TechniCalcEditor.Encoding_VarInt.charToIndex;
+};
 
 module Elements = {
   open TechniCalcEditor;
