@@ -85,6 +85,7 @@ keys->Js.Dict.set("magnitude", One(Magnitude1));
 keys->Js.Dict.set("degree", One(Degree));
 keys->Js.Dict.set("arcminute", One(ArcMinute));
 keys->Js.Dict.set("arcsecond", One(ArcSecond));
+keys->Js.Dict.set("gradian", One(Gradian));
 keys->Js.Dict.set("vec2", One(Vector2S));
 keys->Js.Dict.set("vec3", One(Vector3S));
 keys->Js.Dict.set("mat2", One(Matrix4S));
